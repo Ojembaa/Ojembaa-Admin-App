@@ -1,6 +1,7 @@
 "use client";
 import { ISignIn, IUser } from "@/common/interfaces";
 import { httpLogin } from "@/services/requests";
+import { decodeToken } from "@/services/store";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -20,8 +21,10 @@ export const useLoginUser = () => {
       const res = await httpLogin(data);
       if (res) {
         setUserData(res.data.data);
-        sessionStorage.setItem("token", res.data.data.token);
-        sessionStorage.setItem("user", JSON.stringify(res.data.data.user));
+        sessionStorage.setItem("token", res.data.data.accessToken);
+        const decodedToken = decodeToken(res.data.data.accessToken);
+        console.log("decodedToken", decodedToken);
+        sessionStorage.setItem("user", JSON.stringify(decodedToken));
         setIsAuthenticated(true);
         router.push("/admin/dashboard");
       }

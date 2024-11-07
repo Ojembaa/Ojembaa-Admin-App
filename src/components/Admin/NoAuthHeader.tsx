@@ -14,21 +14,21 @@ const NoAuthHeader = () => {
 
   return (
     <div className="sticky top-0 z-20">
-      <header className="px-8 py-3 mx-auto text-white border-b border-slate-200 md:px-16 bg-[#304D30]">
+      <header className="px-8 py-3 mx-auto  border-b border-black md:px-16 bg-[#F56118]">
         <nav className="flex items-center justify-between font-semibold ">
           <div>
             <Image
-              src="/assets/imgs/sda-logo.jpeg"
+              src="/assets/imgs/logo/ojembaa.jpeg"
               alt="Church-logo"
-              width={50}
-              height={10}
+              width={60}
+              height={20}
               className="h-15 w-15 rounded-full"
             />
           </div>
 
           <div className="items-center hidden h-10 font-serif md:flex md:space-x-8 text-sm">
             <div className="group">
-              <Link href="/admin/signin">Sign In</Link>
+              <Link href="/">Sign In</Link>
               <div className="mx-2 group-hover:border-b group-hover:border-white"></div>
             </div>
             <div className="group">

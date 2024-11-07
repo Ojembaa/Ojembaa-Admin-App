@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 export const useRegisterUser = () => {
   const [usersData, setUsersData] = useState<any>();
   const [loading, setLoading] = useState(false);
-  //   const { setError } = useErrorContext();
 
   const router = useRouter();
 
@@ -19,12 +18,12 @@ export const useRegisterUser = () => {
       if (data) {
         setUsersData(data);
         toast.success("Registration successful");
-        router.push("/admin/signin");
+        router.push("/");
       }
     } catch (error) {
       let errorMessage: string = "";
       if (error instanceof AxiosError) {
-        errorMessage = error?.response?.data?.message;
+        errorMessage = error?.response?.data?.message[0];
       }
       toast.error(errorMessage);
       //@ts-ignore

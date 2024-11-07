@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 export const useGetUsers = () => {
   const [users, setUsers] = useState<AppUsers[]>([]);
   const [loading, setLoading] = useState(true);
-  //   const { setError } = useErrorContext();
+
+  console.log(users, "users");
 
   const fetchAllUsers = useCallback(async () => {
     try {

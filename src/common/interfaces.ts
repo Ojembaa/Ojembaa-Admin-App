@@ -1,10 +1,14 @@
 import { IBaseEntity } from "./base.interface";
+import { Type } from "./constants/enum";
 
 export interface ISignUpUser {
-  userName: string;
-  password: string;
+  name: string;
   firstName: string;
   lastName: string;
+  type: Type;
+  phone: string;
+  password: string;
+  email: string;
   confirmPassword: string;
 }
 
@@ -13,7 +17,7 @@ export interface IAnnouncement extends IBaseEntity {
 }
 
 export interface ISignIn {
-  userName: string;
+  email: string;
   password: string;
   platform?: string;
 }
@@ -32,9 +36,11 @@ export interface AppUsers {
   id?: string;
   createdDate: string;
   firstName: string;
-  isVerified: boolean;
   lastName: string;
   userName: string;
+  isActivated: boolean;
+  status: string
+  role: string;
 }
 
 export interface IKeywords {

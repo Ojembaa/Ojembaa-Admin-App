@@ -23,14 +23,15 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // Auth Request
 export function httpLogin(authObject: ISignIn) {
   try {
-    return axios.post(`${API_URL}/auth/login`, authObject);
+    return axios.post(`${API_URL}/auth/sign-in`, authObject);
   } catch (error) {
     console.log(error);
   }
 }
+
 export async function httpRegister(authObject: ISignUpUser) {
   try {
-    return await axios.post(`${API_URL}/auth/register`, authObject);
+    return await axios.post(`${API_URL}/admin/auth/sign-up`, authObject);
   } catch (error) {
     console.log(error);
   }
@@ -190,7 +191,7 @@ export async function httpPublishBulletin(
 // User
 export async function httpGetUsers() {
   try {
-    return axios.get(`${API_URL}/auth/users`, {
+    return axios.get(`${API_URL}/admin/users`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
