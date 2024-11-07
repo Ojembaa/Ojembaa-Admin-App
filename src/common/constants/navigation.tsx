@@ -24,24 +24,30 @@ export const DASHBOARD_SIDEBAR_LINK = [
   },
 
   {
-    key: "bulletin",
-    label: "Bulletin",
-    path: "/admin/bulletin",
+    key: "users",
+    label: "Users",
+    path: "/admin/users",
     icon: <NewspaperIcon width={30.75} height={32} />,
   },
 
   {
-    key: "announcement",
-    label: "Announcement",
-    path: "/admin/announcement",
+    key: "categories",
+    label: "Categories",
+    path: "/admin/categories",
     icon: <InformationCircleIcon width={30.75} height={32} />,
   },
 
   {
-    key: "users",
-    label: "User",
-    path: "/admin/user",
+    key: "reconciliation",
+    label: "Reconciliation",
+    path: "/admin/reconciliation",
     icon: <UserGroupIcon width={30.75} height={32} />,
+  },
+  {
+    key: "settings",
+    label: "Settings",
+    path: "/admin/settings",
+    icon: <Cog6ToothIcon className="text-white h-6 w-6" />,
   },
 ];
 

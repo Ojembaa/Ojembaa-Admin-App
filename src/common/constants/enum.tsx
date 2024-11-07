@@ -1,7 +1,6 @@
-export enum ToggleModalBy {
-  BASKET = "basket",
-  PRICELIST = "priceList",
-  CHECKOUT = "checkout",
-  LOGIN = "login",
-  SUCCESS = "success",
+export enum Type {
+  SENDER = "SENDER",
+  RECEIVER = "RECEIVER",
+  COURIER = "COURIER",
+  ADMIN = "ADMIN",
 }

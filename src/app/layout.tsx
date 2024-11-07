@@ -18,8 +18,8 @@ const raleWay = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Seventh-Day Adventist Church, Ogba  | E-Bulletin ",
-  description: "Stay Updated Globally & Remain Blessed",
+  title: "Ojembaa Admin",
+  description: "Send you package to where ever",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -62,7 +62,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </body>
-      {/* OgbachurchAWS94! */}
     </html>
   );
 }

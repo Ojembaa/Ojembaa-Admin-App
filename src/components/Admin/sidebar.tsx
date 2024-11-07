@@ -7,7 +7,7 @@ import { DASHBOARD_SIDEBAR_LINK } from "../../common/constants/navigation";
 import { useLoginUser } from "@/hooks/useUserLogin";
 
 const linkClasses =
-  "flex items-center pl-[2.5rem] gap-4 text-white w-[13.75rem] h-[2.625rem] hover:bg-orange-500 hover:no-underline active:bg-orange-500 rounded-r-[.875rem] hover:border-r-[1px] active:border-r-[1px] text-base";
+  "flex items-center pl-[2.5rem] gap-4 text-black w-[13.75rem] h-[2.625rem] hover:bg-orange-500 hover:no-underline active:bg-orange-500 rounded-r-[.875rem] hover:border-r-[1px] active:border-r-[1px] text-base";
 
 const SideBar = ({
   isOpen,
@@ -24,11 +24,11 @@ const SideBar = ({
       ref={sidebarRef}
       className={`${
         isOpen ? "flex" : "hidden"
-      } md:flex bg-[#304D30] w-[15.1875rem] pr-[1.4375rem] md:pt-[2.8125rem] pt-[2.5125rem] pb-[4rem] flex-col text-white z-[99999999] md:static absolute h-screen`}
+      } md:flex bg-[#F8A62D] w-[15.1875rem] pr-[1.4375rem] md:pt-[2.8125rem] pt-[2.5125rem] pb-[4rem] flex-col text-black z-[99999999] md:static absolute h-screen`}
     >
       <div className="flex items-center justify-center gap-5 ml-[3.375rem] w-fit">
         <Image
-          src={"/assets/imgs/sda-logo.jpeg"}
+          src={"/assets/imgs/logo/ojembaa.jpeg"}
           className="rounded-full w-20 h-20"
           alt="icon"
           width={59}
@@ -45,7 +45,7 @@ const SideBar = ({
         className="flex justify-between items-center w-[6.5625rem] h-[1.5625rem] text-red-500 hover:text-red-600 cursor-pointer ml-[4.3125rem]"
         onClick={() => {
           sessionStorage.clear();
-          router.push("/admin/signin");
+          router.push("/");
           setIsAuthenticated(false);
         }}
       >
