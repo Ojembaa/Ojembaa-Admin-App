@@ -1,6 +1,6 @@
 import { httpDeleteBulletinById } from "@/services/requests";
 import { useCallback, useState } from "react";
-import { useGetbulletins } from "./useGetBulletins";
+import { useGetbulletins } from "./useGetCategories";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 

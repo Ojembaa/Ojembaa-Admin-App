@@ -1,5 +1,5 @@
 import { IBulletin } from "@/common/interfaces";
-import { useGetbulletins } from "./useGetBulletins";
+import { useGetbulletins } from "./useGetCategories";
 
 export const useHandleSearchFunction = () => {
   const { bulletins, loading } = useGetbulletins();

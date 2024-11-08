@@ -39,14 +39,14 @@ export interface AppUsers {
   lastName: string;
   userName: string;
   isActivated: boolean;
-  status: string
+  status: string;
   role: string;
 }
 
 export interface IKeywords {
   onSearch: (query: string) => void;
 }
-
+// take out
 export interface IBulletin extends IBaseEntity, Pick<IAnnouncement, "content"> {
   status: BulletinStatusEnum;
 
@@ -111,6 +111,12 @@ export interface IBulletin extends IBaseEntity, Pick<IAnnouncement, "content"> {
 
   startDate: string;
   endDate: string;
+}
+
+export interface ICategories {
+  name: string;
+  description: string;
+  amount: number;
 }
 
 export enum BulletinStatusEnum {

@@ -1,7 +1,7 @@
 "use clint";
 import { useEffect, useState } from "react";
 import { BulletinStatusEnum, IBulletin } from "../interfaces";
-import { useGetbulletins } from "@/hooks/useGetBulletins";
+import { useGetbulletins } from "@/hooks/useGetCategories";
 
 const useFilteredPublishedBulletin = () => {
   const [publishedData, setPublishedData] = useState<IBulletin>();

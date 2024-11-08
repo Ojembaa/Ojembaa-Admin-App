@@ -3,7 +3,7 @@ import Container from "@/components/Admin/Container";
 import AdminLayout from "../../../components/Admin/layout";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { useGetbulletins } from "@/hooks/useGetBulletins";
+import { useGetbulletins } from "@/hooks/useGetCategories";
 import { Spinner } from "@/components/Common/Spinner";
 import dayjs from "dayjs";
 import Search from "@/components/Admin/Search";

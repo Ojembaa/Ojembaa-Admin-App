@@ -5,67 +5,56 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
 import Search from "@/components/Admin/Search";
 import Button from "@/components/Admin/button";
-import { useRouter } from "next/navigation";
 import withAuth from "@/common/HOC/withAuth";
-import { useGetUsers } from "@/hooks/useGetUsers";
-import Switch from "react-switch";
-import { AppUsers } from "@/common/interfaces";
-import { useUpdateUserDetail } from "@/hooks/useUpdateUser";
+import { ICategories } from "@/common/interfaces";
+import { useGetCategories } from "@/hooks/useGetCategories";
+import CategoryModal from "@/components/Common/Modal/CategoryModal";
+import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 
-const User = () => {
-  const router = useRouter();
+const Category = () => {
+  const { categories, fetchCategories, loading } = useGetCategories();
+  const { setIsShowModal, isShowModal } = useToggleModalContext();
 
-  const { fetchAllUsers, users, loading, setLoading } = useGetUsers();
-  const { UpdateUserDetailById } = useUpdateUserDetail();
-  const [filteredUser, setFilteredUser] = useState<AppUsers[]>([]);
-
-  useEffect(() => {
-    setFilteredUser(users);
-  }, [users]);
+  const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
+    []
+  );
 
   useEffect(() => {
-    fetchAllUsers();
+    setFilteredCategories(categories);
+  }, [categories]);
+
+  useEffect(() => {
+    fetchCategories();
   }, []);
 
-  const updateUserStatus = async (id: string, status: boolean) => {
-    try {
-      setLoading(true);
-      await UpdateUserDetailById(id, { isActivated: status });
-      fetchAllUsers();
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
+  const handleShowModal = () => {
+    setIsShowModal((preVal) => !preVal);
   };
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {
-      setFilteredUser(users);
+      setFilteredCategories(categories);
     } else {
-      const bulletinSearchResults =
-        users &&
-        users.filter((item) => {
-          return (
-            item.firstName.toLowerCase().includes(query.toLowerCase()) ||
-            item.userName.toLowerCase().includes(query.toLowerCase()) ||
-            item.lastName.toLowerCase().includes(query.toLowerCase())
-          );
+      const categorySearchResults =
+        categories &&
+        categories.filter((item) => {
+          return item.name.toLowerCase().includes(query.toLowerCase());
         });
-      setFilteredUser(bulletinSearchResults);
+      setFilteredCategories(categorySearchResults);
     }
   };
 
   return (
     <AdminLayout>
       <Container className="md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7">
-        <div className="flex flex-col justify-between mb-5 lg:flex-row gap-y-5">
+        <div className="flex flex-col gap-3 items-center mb-5 lg:flex-row gap-y-5">
           <Search onSearch={handleSearch} />
           <Button
             type="button"
-            className="px-8 py-2 hover:bg-orange-600"
-            onClick={() => router.push("/admin/bulletin/create")}
+            className="px-3 py-2 hover:bg-orange-600"
+            onClick={() => handleShowModal()}
           >
-            Create
+            Add New
           </Button>
         </div>
         <hr className="w-full" />
@@ -77,27 +66,27 @@ const User = () => {
                   Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Amount
+                  Description
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Date
+                  Amount
                 </th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-y-50">
               {!loading &&
-                filteredUser?.map((data, idx: number) => {
+                filteredCategories?.map((data, idx: number) => {
                   return (
                     <tr className="" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {idx + 1}
+                        {data.name}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.firstName}
+                        {data.description}
                       </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.lastName}
+                        {data.amount}
                       </td>
                     </tr>
                   );
@@ -110,16 +99,17 @@ const User = () => {
               <Spinner color="orange" />
             </div>
           ) : (
-            filteredUser?.length === 0 && (
+            filteredCategories?.length === 0 && (
               <div className="flex items-center justify-center font-bold h-96">
-                No Data created yet
+                No Data found!
               </div>
             )
           )}
         </div>
+        {isShowModal && <CategoryModal handleShowModal={handleShowModal} />}
       </Container>
     </AdminLayout>
   );
 };
 
-export default withAuth(User);
+export default withAuth(Category);

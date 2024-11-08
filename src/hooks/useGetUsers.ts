@@ -8,8 +8,6 @@ export const useGetUsers = () => {
   const [users, setUsers] = useState<AppUsers[]>([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(users, "users");
-
   const fetchAllUsers = useCallback(async () => {
     try {
       setLoading(true);

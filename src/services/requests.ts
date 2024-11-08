@@ -4,6 +4,7 @@ import {
   BulletinStatusEnum,
   CreateBulletinDTO,
   IAnnouncement,
+  ICategories,
   ISignIn,
   ISignUpUser,
 } from "@/common/interfaces";
@@ -37,10 +38,10 @@ export async function httpRegister(authObject: ISignUpUser) {
   }
 }
 
-// Bulletin Request
-export async function httpCreateBulletin(featureObj: CreateBulletinDTO) {
+// Category Request
+export async function httpCreateCategory(value: ICategories) {
   try {
-    return axios.post(`${API_URL}/bulletin/create`, featureObj, {
+    return axios.post(`${API_URL}/categories`, value, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -49,6 +50,7 @@ export async function httpCreateBulletin(featureObj: CreateBulletinDTO) {
     console.log(error);
   }
 }
+
 export async function httpUpdateBulletinById(
   id: string,
   authObject: CreateBulletinDTO
@@ -64,8 +66,8 @@ export async function httpUpdateBulletinById(
   }
 }
 
-export async function httpGetBulettins(query?: QueryParamDto) {
-  const response = await axios.get(`${API_URL}/bulletin`, {
+export async function httpGetCategories(query?: QueryParamDto) {
+  const response = await axios.get(`${API_URL}/categories`, {
     headers: {
       Authorization: "Bearer " + getAuthFromLocal(),
     },

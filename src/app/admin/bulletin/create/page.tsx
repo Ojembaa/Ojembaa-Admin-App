@@ -5,7 +5,7 @@ import Container from "@/components/Admin/Container";
 import AdminLayout from "@/components/Admin/layout";
 import { useForm } from "react-hook-form";
 import Input from "@/components/Admin/input";
-import { useCreateBulletins } from "@/hooks/useCreateBulletin";
+import { useCreateBulletins } from "@/hooks/useCreateCategory";
 import { Spinner } from "@/components/Common/Spinner";
 import { CreateBulletinDTO } from "@/common/interfaces";
 import { useGetAnnouncements } from "@/hooks/useGetAnnouncements";
