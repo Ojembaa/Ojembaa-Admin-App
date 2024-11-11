@@ -1,52 +1,65 @@
 "use client";
 import Container from "@/components/Admin/Container";
 import AdminLayout from "../../../components/Admin/layout";
-import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
-import dayjs from "dayjs";
 import Search from "@/components/Admin/Search";
 import Button from "@/components/Admin/button";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import Link from "next/link";
-import { useGetAnnouncements } from "@/hooks/useGetAnnouncements";
-import { useDeleteAnnouncementItem } from "@/hooks/useDeleteAnnouncementById";
-import { IAnnouncement } from "@/common/interfaces";
 import withAuth from "@/common/HOC/withAuth";
+import { ICategories } from "@/common/interfaces";
+import { useGetCategories } from "@/hooks/useGetCategories";
+import CategoryModal from "@/app/admin/categories/CategoryModal";
+import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
+import { Menu, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { useDeleteCategory } from "@/hooks/useDeleteCategory";
+import Swal from "sweetalert2";
 
-const AnnouncementListPage = () => {
-  const router = useRouter();
+const Settings = () => {
+  const { categories, fetchCategories, loading } = useGetCategories();
+  const { DeleteCategory, isBusy } = useDeleteCategory();
+  const { setIsShowModal, isShowModal } = useToggleModalContext();
+  const [dataId, setDataId] = useState<string>();
 
-  const { deleteAnnouncementItem, isBusy } = useDeleteAnnouncementItem();
-  const { announcements, loading } = useGetAnnouncements();
-  const [fillteredAnnouncements, setFilteredAnnouncement] = useState<
-    IAnnouncement[]
-  >([]);
+  const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
+    []
+  );
 
   useEffect(() => {
-    setFilteredAnnouncement(announcements);
-  }, [announcements]);
+    setFilteredCategories(categories);
+  }, [categories]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const handleShowModal = () => {
+    setIsShowModal((preVal) => !preVal);
+  };
+
+  const handleEditCategoryModal = (id: string) => {
+    setDataId(id);
+    setIsShowModal((preVal) => !preVal);
+  };
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {
-      setFilteredAnnouncement(announcements);
+      setFilteredCategories(categories);
     } else {
-      const announcementSearchResults =
-        announcements &&
-        announcements.filter((item) => {
-          return item.content
-            .toLocaleLowerCase()
-            .includes(query.toLocaleLowerCase());
+      const categorySearchResults =
+        categories &&
+        categories.filter((item) => {
+          return item.name.toLowerCase().includes(query.toLowerCase());
         });
-      setFilteredAnnouncement(announcementSearchResults);
+      setFilteredCategories(categorySearchResults);
     }
   };
+
   const deleteItem = (id: string) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
-        confirmButton: "bg-green-700 p-3 rounded-lg text-white mx-2",
-        cancelButton: "p-3 bg-red-700 rounded-lg text-white ",
+        confirmButton: "p-3 bg-red-700  rounded-lg text-white mx-2",
+        cancelButton: "p-3 bg-green-700 rounded-lg text-white ",
       },
       buttonsStyling: false,
     });
@@ -60,16 +73,14 @@ const AnnouncementListPage = () => {
         cancelButtonText: "No, cancel!",
         reverseButtons: true,
       })
-      .then((result) => {
+      .then(async (result) => {
         if (result.isConfirmed) {
-          deleteAnnouncementItem(id);
-          if (!isBusy) {
-            swalWithBootstrapButtons.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
-              icon: "success",
-            });
-          } else "Loading";
+          await DeleteCategory(id);
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
           // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
         } else if (
           /* Read more about handling dismissals below */
@@ -86,15 +97,15 @@ const AnnouncementListPage = () => {
 
   return (
     <AdminLayout>
-      <Container className=" md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7 min-h-screen">
-        <div className=" flex flex-col lg:flex-row gap-y-5 justify-between mb-5">
+      <Container className="md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7">
+        <div className="flex flex-col gap-3 items-center mb-5 lg:flex-row gap-y-5">
           <Search onSearch={handleSearch} />
           <Button
             type="button"
-            className="py-2 px-8  hover:bg-orange-600"
-            onClick={() => router.push("/admin/announcement/create")}
+            className="px-3 py-2 hover:bg-orange-600"
+            onClick={() => handleShowModal()}
           >
-            Create
+            Add New
           </Button>
         </div>
         <hr className="w-full" />
@@ -103,13 +114,13 @@ const AnnouncementListPage = () => {
             <thead className="border-b border-b-gray-400 borer">
               <tr className="">
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  ID
+                  Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Created Date
+                  Description
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Content
+                  Amount
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
                   Action
@@ -119,22 +130,21 @@ const AnnouncementListPage = () => {
 
             <tbody className="divide-y divide-y-50">
               {!loading &&
-                fillteredAnnouncements.map((data: any, idx: number) => {
+                filteredCategories?.map((data, idx: number) => {
                   return (
                     <tr className="" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {idx + 1}
+                        {data.name}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {dayjs(data?.createdDate).format("MMM D, YYYY")}
+                        {data.description}
                       </td>
-                      <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.content}
+                      <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
+                        {data.amount}
                       </td>
-
                       <td className="p-2 text-sm text-gray-700">
                         {" "}
-                        <div className="">
+                        <div className="z-10 ">
                           <Menu
                             as="div"
                             className="relative inline-block text-left"
@@ -170,25 +180,7 @@ const AnnouncementListPage = () => {
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
-                                      <button
-                                        className={`${
-                                          active
-                                            ? "bg-gray-200 text-black"
-                                            : "text-black-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        View
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </div>
-
-                                <div className="px-1 py-1 ">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <Link
-                                        href={`/admin/announcement/edit/${data.id}`}
-                                      >
+                                      <Link href={`/categories/`}>
                                         <button
                                           className={`${
                                             active
@@ -196,9 +188,28 @@ const AnnouncementListPage = () => {
                                               : "text-black-900"
                                           } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                         >
-                                          Edit
+                                          View
                                         </button>
                                       </Link>
+                                    )}
+                                  </Menu.Item>
+                                </div>
+
+                                <div className="px-1 py-1 ">
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() =>
+                                          handleEditCategoryModal(data?.id)
+                                        }
+                                        className={`${
+                                          active
+                                            ? "bg-gray-200 text-black"
+                                            : "text-black-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        Edit
+                                      </button>
                                     )}
                                   </Menu.Item>
                                 </div>
@@ -206,7 +217,7 @@ const AnnouncementListPage = () => {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                        onClick={() => deleteItem(data.id)}
+                                        onClick={() => deleteItem("3")}
                                         className={`${
                                           active
                                             ? "bg-gray-200 text-red-700"
@@ -228,23 +239,25 @@ const AnnouncementListPage = () => {
                 })}
             </tbody>
           </table>
-
           {loading ? (
-            <div className="flex justify-center items-center h-96">
+            <div className="flex items-center justify-center h-96">
               {" "}
               <Spinner color="orange" />
             </div>
           ) : (
-            fillteredAnnouncements.length === 0 && (
-              <div className="flex justify-center items-center h-96 font-bold">
-                No Announcement created yet
+            filteredCategories?.length === 0 && (
+              <div className="flex items-center justify-center font-bold h-96">
+                No Data found!
               </div>
             )
           )}
         </div>
+        {isShowModal && (
+          <CategoryModal handleShowModal={handleShowModal} dataId={dataId} />
+        )}
       </Container>
     </AdminLayout>
   );
 };
 
-export default withAuth(AnnouncementListPage);
+export default withAuth(Settings);

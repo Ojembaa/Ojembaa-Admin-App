@@ -5,7 +5,7 @@ import Container from "@/components/Admin/Container";
 import AdminLayout from "@/components/Admin/layout";
 import { Spinner } from "@/components/Common/Spinner";
 import { useEffect } from "react";
-import { useGetBulletinById } from "@/hooks/useGetBulletinById";
+import { useGetBulletinById } from "@/hooks/useUpdateCategoryById";
 import Button from "@/components/Admin/button";
 import { usePublishBulletin } from "@/hooks/usePublishBulletin";
 import { BulletinStatusEnum } from "@/common/interfaces";

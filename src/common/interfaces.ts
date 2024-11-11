@@ -114,6 +114,7 @@ export interface IBulletin extends IBaseEntity, Pick<IAnnouncement, "content"> {
 }
 
 export interface ICategories {
+  id:string
   name: string;
   description: string;
   amount: number;

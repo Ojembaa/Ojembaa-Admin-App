@@ -56,9 +56,14 @@ const Register = () => {
       <div className="min-h-screen w-auto flex justify-center items-center text-black bg-[#F8A62D]">
         <form onSubmit={handleSubmit(registerUser)}>
           <div className="border-2 border-black shadow-md p-10 rounded-2xl">
-            <div className="flex justify-center font-bold">Register</div>
+            <div className="text-center">
+              <p className="font-bold">Ojembaa Admin</p>
+            </div>
+            <div className="flex justify-center font-bold text-sm">
+              Register
+            </div>
             <div className="flex gap-3">
-              <div className="">
+              <div className="w-56">
                 <label className="text-xs">Name</label>
                 <input
                   {...register("name", { required: true })}
@@ -66,13 +71,13 @@ const Register = () => {
                   type="text"
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.name && (
+                  <p className=" text-red-500 text-sm italic ">
+                    Name is required
+                  </p>
+                )}
               </div>
-              {errors?.name && (
-                <p className=" text-red-500 text-sm italic ">
-                  Name is required
-                </p>
-              )}
-              <div className="">
+              <div className="w-56">
                 <label className="text-xs">Firstname</label>
                 <input
                   {...register("firstName", { required: true })}
@@ -80,16 +85,16 @@ const Register = () => {
                   type="text"
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.firstName && (
+                  <p className=" text-red-500 text-sm italic ">
+                    First name is required
+                  </p>
+                )}
               </div>
-              {errors?.firstName && (
-                <p className=" text-red-500 text-sm italic ">
-                  First name is required
-                </p>
-              )}
             </div>
 
             <div className="flex gap-3">
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <label className="text-xs">Lastname</label>
                 <input
                   {...register("lastName", { required: true })}
@@ -97,14 +102,14 @@ const Register = () => {
                   type="text"
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.lastName && (
+                  <p className=" text-red-500 text-sm italic ">
+                    Lastname is required
+                  </p>
+                )}
               </div>
-              {errors?.lastName && (
-                <p className=" text-red-500 text-sm italic ">
-                  Lastname is required
-                </p>
-              )}
 
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <label className="text-xs">Phone</label>
                 <input
                   {...register("phone", { required: true })}
@@ -112,15 +117,15 @@ const Register = () => {
                   type="number"
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.phone && (
+                  <p className=" text-red-500 text-sm italic ">
+                    phone is required
+                  </p>
+                )}
               </div>
-              {errors?.phone && (
-                <p className=" text-red-500 text-sm italic ">
-                  phone is required
-                </p>
-              )}
             </div>
             <div className="flex justify-start items-center gap-3">
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <label className="text-xs">Email</label>
                 <input
                   {...register("email", { required: true })}
@@ -128,19 +133,19 @@ const Register = () => {
                   type="text"
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.email && (
+                  <p className=" text-red-500 text-sm italic">
+                    email is required
+                  </p>
+                )}
               </div>
-              {errors?.email && (
-                <p className=" text-red-500 text-sm italic">
-                  email is required
-                </p>
-              )}
 
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <label className="text-xs">Type</label>
                 <select
                   {...register("type", { required: true })}
                   id="type"
-                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
+                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg h-10"
                 >
                   {types.map((type) => (
                     <option key={type} value={type}>
@@ -148,15 +153,15 @@ const Register = () => {
                     </option>
                   ))}
                 </select>
+                {errors?.type && (
+                  <p className=" text-red-500 text-sm italic ">
+                    type is required
+                  </p>
+                )}
               </div>
-              {errors?.type && (
-                <p className=" text-red-500 text-sm italic ">
-                  type is required
-                </p>
-              )}
             </div>
             <div className="flex gap-3">
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <div className="flex justify-between items-center">
                   <label className="text-xs">Confirm password</label>
                   <span
@@ -176,21 +181,21 @@ const Register = () => {
                   type={confirmPasswordType}
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {confirmPasswordValue &&
+                confirmPasswordValue !== passwordValue ? (
+                  <p className=" text-red-500 text-sm italic ">
+                    Password does not match
+                  </p>
+                ) : errors?.confirmPassword ? (
+                  <p className=" text-red-500 text-sm italic ">
+                    Confirm Password is required
+                  </p>
+                ) : (
+                  ""
+                )}
               </div>
-              {confirmPasswordValue &&
-              confirmPasswordValue !== passwordValue ? (
-                <p className=" text-red-500 text-sm italic ">
-                  Password does not match
-                </p>
-              ) : errors?.confirmPassword ? (
-                <p className=" text-red-500 text-sm italic ">
-                  Confirm Password is required
-                </p>
-              ) : (
-                ""
-              )}
 
-              <div className="pt-3">
+              <div className="pt-3 w-56">
                 <div className="flex justify-between items-center">
                   <label className="text-xs">Password</label>
                   <span
@@ -208,12 +213,12 @@ const Register = () => {
                   type={inputType}
                   className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
                 />
+                {errors?.password && (
+                  <p className=" text-red-500 text-sm italic ">
+                    Password is required
+                  </p>
+                )}
               </div>
-              {errors?.password && (
-                <p className=" text-red-500 text-sm italic ">
-                  Password is required
-                </p>
-              )}
             </div>
 
             <div className="pt-3">

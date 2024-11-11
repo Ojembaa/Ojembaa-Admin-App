@@ -76,9 +76,21 @@ export async function httpGetCategories(query?: QueryParamDto) {
   return response.data.data;
 }
 
-export async function httpGetBulletinById(id: string) {
+export async function httpUpdateCategoryById(id: string, object: ICategories) {
   try {
-    return axios.get(`${API_URL}/bulletin/${id}`, {
+    return await axios.put(`${API_URL}/categories/${id}`, object, {
+      headers: {
+        Authorization: "Bearer " + getAuthFromLocal(),
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function httpDeleteCategoryById(id: string) {
+  try {
+    return axios.delete(`${API_URL}/categories/${id}`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -88,9 +100,9 @@ export async function httpGetBulletinById(id: string) {
   }
 }
 
-export async function httpDeleteBulletinById(id: string) {
+export async function httpGetBulletinById(id: string) {
   try {
-    return axios.delete(`${API_URL}/bulletin/${id}`, {
+    return axios.get(`${API_URL}/bulletin/${id}`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -113,21 +125,6 @@ export async function httpCreateAnnouncement(Obj: IAnnouncement) {
 export async function httpGetAnnouncements() {
   try {
     return axios.get(`${API_URL}/announcement`, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function httpUpdateAnnouncementById(
-  id: string,
-  object: IAnnouncement
-) {
-  try {
-    return await axios.patch(`${API_URL}/announcement/${id}`, object, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },

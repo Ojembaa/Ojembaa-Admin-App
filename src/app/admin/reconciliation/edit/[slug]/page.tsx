@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useGetAnnouncementById } from "@/hooks/useGetAnnouncementbyId";
 import { IAnnouncement } from "@/common/interfaces";
-import { useUpdateeAnnouncementById } from "@/hooks/useUpdateAnnouncementById";
+import { useUpdateeAnnouncementById } from "@/hooks/useUpdateCategoryById";
 import withAuth from "@/common/HOC/withAuth";
 
 const EditAnnouncement = ({ params }: { params: { slug: string } }) => {

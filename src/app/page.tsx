@@ -37,9 +37,9 @@ const SignIn = () => {
         <form onSubmit={handleSubmit(handleLoginUser)}>
           <div className="border-2 border-black shadow-md p-10 rounded-2xl">
             <div className="text-center">
-              <p className="font-extrabold text-sm">Ojembaa Admin</p>
+              <p className="font-bold ">Ojembaa Admin</p>
             </div>
-            <div className="flex justify-center font-bold">Signin</div>
+            <div className="flex justify-center font-bold text-sm">Signin</div>
 
             <div className="">
               <label className="pb-10 text-xs">Email</label>
@@ -51,9 +51,7 @@ const SignIn = () => {
               />
             </div>
             {errors?.email && (
-              <p className="text-sm italic text-red-500">
-                Email is required
-              </p>
+              <p className="text-sm italic text-red-500">Email is required</p>
             )}
             <div className="pt-5">
               <div className="flex justify-between items-center">
