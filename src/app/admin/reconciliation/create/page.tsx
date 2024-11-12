@@ -7,7 +7,7 @@ import AdminLayout from "@/components/Admin/layout";
 import { useForm } from "react-hook-form";
 import Input from "@/components/Admin/input";
 import { Spinner } from "@/components/Common/Spinner";
-import { useCreateAnnouncement } from "@/hooks/useCreateAnnouncement";
+import { useCreateAnnouncement } from "@/hooks/useCreateSettings";
 import { IAnnouncement } from "@/common/interfaces";
 import withAuth from "@/common/HOC/withAuth";
 

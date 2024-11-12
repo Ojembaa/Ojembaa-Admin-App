@@ -10,14 +10,7 @@ interface Props {
 
 const Input = React.forwardRef<HTMLInputElement, Props>(
   (
-    {
-      type,
-      defaultValue,
-      className,
-      label,
-      disabled = false,
-      ...props
-    },
+    { type, defaultValue, className, label, disabled = false, ...props },
     ref
   ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -29,7 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
         <label className="font-semibold text-sm">{label}</label>
         <input
           ref={inputRef}
-          className={` ${className} h-3 w-full p-5 rounded-xl border border-gray-300 font-poppins text-black focus:outline-none
+          className={` ${className} h-3 w-full p-5 rounded-md border border-gray-300 font-poppins text-black focus:outline-none
         focus:border-gray-500`}
           type={type}
           onWheel={(e) => e.currentTarget.blur()}

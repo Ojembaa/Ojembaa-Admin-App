@@ -6,31 +6,34 @@ import { Spinner } from "@/components/Common/Spinner";
 import Search from "@/components/Admin/Search";
 import Button from "@/components/Admin/button";
 import withAuth from "@/common/HOC/withAuth";
-import { ICategories } from "@/common/interfaces";
-import { useGetCategories } from "@/hooks/useGetCategories";
-import CategoryModal from "@/app/admin/categories/CategoryModal";
+import { ISettings } from "@/common/interfaces";
 import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useDeleteCategory } from "@/hooks/useDeleteCategory";
 import Swal from "sweetalert2";
+import SettingsModal from "./SettingModal";
+import { useGetSettings } from "@/hooks/useGetSettings";
 
 const Settings = () => {
-  const { categories, fetchCategories, loading } = useGetCategories();
+  const { settings, fetchSettings, loading } = useGetSettings();
   const { DeleteCategory, isBusy } = useDeleteCategory();
   const { setIsShowModal, isShowModal } = useToggleModalContext();
   const [dataId, setDataId] = useState<string>();
 
-  const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
-    []
-  );
+  const [filteredSettings, setFilteredSettings] = useState<any>([]);
+  console.log(filteredSettings, "filteredSettings");
 
   useEffect(() => {
-    setFilteredCategories(categories);
-  }, [categories]);
+    const results = Object.entries(settings).map(([key, value]) => ({
+      [key]: value,
+    }));
+    console.log(results);
+    setFilteredSettings(results);
+  }, [settings]);
 
   useEffect(() => {
-    fetchCategories();
+    fetchSettings();
   }, []);
 
   const handleShowModal = () => {
@@ -44,14 +47,14 @@ const Settings = () => {
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {
-      setFilteredCategories(categories);
+      setFilteredSettings(settings);
     } else {
-      const categorySearchResults =
-        categories &&
-        categories.filter((item) => {
+      const settingSearchResults =
+        settings &&
+        settings.filter((item) => {
           return item.name.toLowerCase().includes(query.toLowerCase());
         });
-      setFilteredCategories(categorySearchResults);
+      setFilteredSettings(settingSearchResults);
     }
   };
 
@@ -117,10 +120,7 @@ const Settings = () => {
                   Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Description
-                </th>
-                <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Amount
+                  Value
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
                   Action
@@ -130,17 +130,14 @@ const Settings = () => {
 
             <tbody className="divide-y divide-y-50">
               {!loading &&
-                filteredCategories?.map((data, idx: number) => {
+                filteredSettings?.map((data: any, idx: number) => {
                   return (
                     <tr className="" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
                         {data.name}
                       </td>
-                      <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.description}
-                      </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.amount}
+                        {data.value}
                       </td>
                       <td className="p-2 text-sm text-gray-700">
                         {" "}
@@ -194,13 +191,13 @@ const Settings = () => {
                                     )}
                                   </Menu.Item>
                                 </div>
-
+                                {/* 
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
                                         onClick={() =>
-                                          handleEditCategoryModal(data?.id)
+                                          handleEditCategoryModal(idx)
                                         }
                                         className={`${
                                           active
@@ -212,7 +209,7 @@ const Settings = () => {
                                       </button>
                                     )}
                                   </Menu.Item>
-                                </div>
+                                </div> */}
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
@@ -245,7 +242,7 @@ const Settings = () => {
               <Spinner color="orange" />
             </div>
           ) : (
-            filteredCategories?.length === 0 && (
+            filteredSettings?.length === 0 && (
               <div className="flex items-center justify-center font-bold h-96">
                 No Data found!
               </div>
@@ -253,7 +250,7 @@ const Settings = () => {
           )}
         </div>
         {isShowModal && (
-          <CategoryModal handleShowModal={handleShowModal} dataId={dataId} />
+          <SettingsModal handleShowModal={handleShowModal} dataId={dataId} />
         )}
       </Container>
     </AdminLayout>

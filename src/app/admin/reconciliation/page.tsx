@@ -3,8 +3,6 @@ import Container from "@/components/Admin/Container";
 import AdminLayout from "../../../components/Admin/layout";
 import { Fragment, useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
-import Search from "@/components/Admin/Search";
-import Button from "@/components/Admin/button";
 import withAuth from "@/common/HOC/withAuth";
 import { ICategories } from "@/common/interfaces";
 import { useGetCategories } from "@/hooks/useGetCategories";
@@ -42,18 +40,6 @@ const Reconciliation = () => {
     setIsShowModal((preVal) => !preVal);
   };
 
-  const handleSearch = (query: string) => {
-    if (query.trim() === "") {
-      setFilteredCategories(categories);
-    } else {
-      const categorySearchResults =
-        categories &&
-        categories.filter((item) => {
-          return item.name.toLowerCase().includes(query.toLowerCase());
-        });
-      setFilteredCategories(categorySearchResults);
-    }
-  };
 
   const deleteItem = (id: string) => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -98,17 +84,22 @@ const Reconciliation = () => {
   return (
     <AdminLayout>
       <Container className="md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7">
-        <div className="flex flex-col gap-3 items-center mb-5 lg:flex-row gap-y-5">
-          <Search onSearch={handleSearch} />
-          <Button
-            type="button"
-            className="px-3 py-2 hover:bg-orange-600"
-            onClick={() => handleShowModal()}
-          >
-            Add New
-          </Button>
-        </div>
+        <div className="font-bold py-3">Reconciliation</div>
         <hr className="w-full" />
+        <div className="flex justify-between my-5 space-x-8 h-52">
+          <div className="border border-slate-300 rounded-md w-full p-7">
+            <p className="font-semibold"> Reconciled</p>
+            <div className="font-semibold text-xl text-slate-500">
+              <p className="font-semibold">50,000.00</p>
+            </div>
+          </div>
+          <div className="border border-slate-300 rounded-md w-full p-7">
+            <p className="font-semibold"> Unreconciled</p>
+            <div className="font-semibold text-xl text-slate-500">
+              <p>100,000.00</p>
+            </div>
+          </div>
+        </div>
         <div className="mb-4 overflow-auto rounded-lg">
           <table className="w-full">
             <thead className="border-b border-b-gray-400 borer">
@@ -117,10 +108,10 @@ const Reconciliation = () => {
                   Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Description
+                  Amount
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Amount
+                  Date of Payment
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
                   Action

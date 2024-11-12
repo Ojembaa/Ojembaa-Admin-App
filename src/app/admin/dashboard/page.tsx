@@ -52,14 +52,14 @@ const Dashboard = () => {
             <div className=" w-full md:flex-row flex-col h-fit flex justify-between rounded-[.7684rem] gap-[1.125rem]">
               <UsersChart
                 bg_color="bg-orange-400"
-                title="Total Active Members"
+                title="Total Active Users"
                 description="Members currently using the bulletin"
                 data="User"
                 Icon={UserGroupIcon}
               />
               <UsersChart
                 bg_color="bg-[#2F4D30]"
-                title="Total created bulletins"
+                title="Total Transaction"
                 count={categoriesData?.length}
                 data="Bulletin"
                 description="Total number of bulletin created by admin"

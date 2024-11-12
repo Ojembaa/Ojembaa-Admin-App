@@ -1,10 +1,8 @@
 import axios from "axios";
 import {
-  AppUsers,
-  BulletinStatusEnum,
-  CreateBulletinDTO,
-  IAnnouncement,
+  IAppUsers,
   ICategories,
+  ISettings,
   ISignIn,
   ISignUpUser,
 } from "@/common/interfaces";
@@ -42,21 +40,6 @@ export async function httpRegister(authObject: ISignUpUser) {
 export async function httpCreateCategory(value: ICategories) {
   try {
     return axios.post(`${API_URL}/categories`, value, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function httpUpdateBulletinById(
-  id: string,
-  authObject: CreateBulletinDTO
-) {
-  try {
-    return await axios.patch(`${API_URL}/bulletin/${id}`, authObject, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -112,19 +95,19 @@ export async function httpGetBulletinById(id: string) {
   }
 }
 
-// Announcement Request
-export async function httpCreateAnnouncement(Obj: IAnnouncement) {
+// Setting Request
+export async function httpCreateSetting(Obj: ISettings) {
   try {
-    return axios.post(`${API_URL}/announcement/create`, Obj, {
+    return axios.post(`${API_URL}/admin/settings`, Obj, {
       headers: { Authorization: "Bearer " + getAuthFromLocal() },
     });
   } catch (error) {
     console.log(error);
   }
 }
-export async function httpGetAnnouncements() {
+export async function httpGetSettings() {
   try {
-    return axios.get(`${API_URL}/announcement`, {
+    return axios.get(`${API_URL}/admin/settings`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -158,35 +141,6 @@ export async function httpDeleteAnnouncementById(id: string) {
   }
 }
 
-export async function httpPublishBulletin(
-  id: string,
-  status: BulletinStatusEnum
-) {
-  try {
-    return axios.patch(
-      `${API_URL}/bulletin/${id}/status?status=${status}`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + getAuthFromLocal(),
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// export async function httpCreateAnnouncement(Obj: IAnnouncement) {
-//   try {
-//     return await axios.post(`${API_URL}/announcement/create`, Obj, {
-//       headers: { Authorization: "Bearer " + getAuthFromLocal() },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 // User
 export async function httpGetUsers() {
   try {
@@ -200,9 +154,9 @@ export async function httpGetUsers() {
   }
 }
 
-export async function httpUpdateUserById(id: string, data: Partial<AppUsers>) {
+export async function httpUpdateUserById(id: string, data: Partial<IAppUsers>) {
   try {
-    return await axios.patch(`${API_URL}/auth/verify-user/${id}`, data, {
+    return await axios.patch(`${API_URL}/admin/couriers/${id}`, data, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
