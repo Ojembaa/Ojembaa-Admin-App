@@ -47,6 +47,7 @@ export interface IAppUsers {
   idNumber: number;
   idType: string;
   isActivated: boolean;
+  activate: boolean;
   isBanned: boolean;
   phone: string;
   phone2: string;
@@ -57,6 +58,64 @@ export interface IAppUsers {
   status: string;
   totalRating: number;
   username: string;
+}
+
+export interface ICourierDetails {
+  id: string;
+  address: string;
+  bannedIpAddress: string;
+  createdAt: string;
+  deliveries: number;
+  electricityBill: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  idImageBack: string;
+  idImageFront: string;
+  idNumber: number;
+  idType: string;
+  isActivated: boolean;
+  activate: boolean;
+  isBanned: boolean;
+  phone: string;
+  phone2: string;
+  profilePhoto: string;
+  rating: number;
+  registrationFeeStatus: boolean;
+  role: UserRole;
+  status: string;
+  totalRating: number;
+  username: string;
+  tools: ITool[];
+  bankInformation: IBankInformation[];
+  guarantor: ICourierGuarantor[];
+}
+
+export interface ITool {
+  id: string;
+  vehicleType: string;
+  proof: string;
+  image: string;
+}
+
+export interface IBankInformation {
+  id: string;
+  name: string;
+  code: string;
+  bvn: string;
+  holder: string;
+  number: string;
+}
+
+export interface ICourierGuarantor {
+  id: string;
+  firstName: string;
+  lastName: string;
+  relationship: string;
+  occupation: string;
+  address: string;
+  phone: string;
+  email: string;
 }
 
 export interface IKeywords {

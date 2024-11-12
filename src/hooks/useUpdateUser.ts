@@ -1,4 +1,4 @@
-import { AppUsers } from "@/common/interfaces";
+import { IAppUsers } from "@/common/interfaces";
 import { httpUpdateUserById } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 
 export const useUpdateUserDetail = () => {
   const [loading, setLoading] = useState(false);
-  const [userDetail, setUserDetail] = useState<Partial<AppUsers>>();
+  const [userDetail, setUserDetail] = useState<Partial<IAppUsers>>();
 
   const UpdateUserDetailById = useCallback(
-    async (id: string, data: Partial<AppUsers>) => {
+    async (id: string, data: Partial<IAppUsers>) => {
       try {
         setLoading(true);
         const result = await httpUpdateUserById(id, data);

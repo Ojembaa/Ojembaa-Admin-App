@@ -21,8 +21,6 @@ const User = () => {
   const { fetchAllUsers, users, loading, setLoading } = useGetUsers();
   const {
     UpdateUserDetailById,
-    userDetail,
-    loading: isLoading,
   } = useUpdateUserDetail();
   const [filteredUser, setFilteredUser] = useState<IAppUsers[]>([]);
 
@@ -82,13 +80,11 @@ const User = () => {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          // await DeleteBulletinItem(id);
           swalWithBootstrapButtons.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
             icon: "success",
           });
-          // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel

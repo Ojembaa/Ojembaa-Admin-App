@@ -117,9 +117,9 @@ export async function httpGetSettings() {
   }
 }
 
-export async function httpGetAnnouncementById(id: string) {
+export async function httpGetCourierDetailById(id: string) {
   try {
-    return axios.get(`${API_URL}/announcement/${id}`, {
+    return axios.get(`${API_URL}/admin/couriers/${id}`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
