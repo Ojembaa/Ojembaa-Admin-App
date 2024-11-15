@@ -4,8 +4,6 @@ import AdminLayout from "../../../components/Admin/layout";
 import { Fragment, useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
 import Search from "@/components/Admin/Search";
-import Button from "@/components/Admin/button";
-import { useRouter } from "next/navigation";
 import withAuth from "@/common/HOC/withAuth";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import Switch from "react-switch";
@@ -16,12 +14,8 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 
 const User = () => {
-  const router = useRouter();
-
   const { fetchAllUsers, users, loading, setLoading } = useGetUsers();
-  const {
-    UpdateUserDetailById,
-  } = useUpdateUserDetail();
+  const { UpdateUserDetailById } = useUpdateUserDetail();
   const [filteredUser, setFilteredUser] = useState<IAppUsers[]>([]);
 
   useEffect(() => {
@@ -52,7 +46,6 @@ const User = () => {
         users.filter((item) => {
           return (
             item.firstName.toLowerCase().includes(query.toLowerCase()) ||
-            item.userName.toLowerCase().includes(query.toLowerCase()) ||
             item.lastName.toLowerCase().includes(query.toLowerCase())
           );
         });
@@ -103,13 +96,6 @@ const User = () => {
       <Container className="md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7">
         <div className="flex flex-col justify-between mb-5 lg:flex-row gap-y-5">
           <Search onSearch={handleSearch} />
-          <Button
-            type="button"
-            className="px-8 py-2 hover:bg-orange-600"
-            onClick={() => router.push("/admin/bulletin/create")}
-          >
-            Create
-          </Button>
         </div>
         <hr className="w-full" />
         <div className="mb-4 overflow-auto rounded-lg">
@@ -274,7 +260,7 @@ const User = () => {
           ) : (
             filteredUser?.length === 0 && (
               <div className="flex items-center justify-center font-bold h-96">
-                No Data created yet
+                No Data found!
               </div>
             )
           )}

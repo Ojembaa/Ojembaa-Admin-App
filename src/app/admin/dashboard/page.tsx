@@ -5,7 +5,7 @@ import SalesChart from "@/components/Admin/SalesChart";
 import UsersChart from "@/components/Admin/UsersChart";
 import withAuth from "@/common/HOC/withAuth";
 import { getCurrentUser } from "@/services/store";
-import { AppUsers, IBulletin, ICategories, IUser } from "@/common/interfaces";
+import { IAppUsers, ICategories, IUser } from "@/common/interfaces";
 import { useEffect, useState } from "react";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import {
@@ -23,7 +23,7 @@ const Dashboard = () => {
     fetchCategories,
     loading: loadingCatrgoryData,
   } = useGetCategories();
-  const [admin, setAdmin] = useState<AppUsers[]>([]);
+  const [admin, setAdmin] = useState<IAppUsers[]>([]);
   const [categoriesData, setCategoriesData] = useState<ICategories[]>([]);
 
   useEffect(() => {
@@ -52,9 +52,9 @@ const Dashboard = () => {
             <div className=" w-full md:flex-row flex-col h-fit flex justify-between rounded-[.7684rem] gap-[1.125rem]">
               <UsersChart
                 bg_color="bg-orange-400"
-                title="Total Active Users"
-                description="Members currently using the bulletin"
-                data="User"
+                title="Recent Deliveries"
+                description="This Captures All The recent Deliveries"
+                data="Deliveries"
                 Icon={UserGroupIcon}
               />
               <UsersChart

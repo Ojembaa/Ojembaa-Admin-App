@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 
 const Category = () => {
   const { categories, fetchCategories, loading } = useGetCategories();
-  const { DeleteCategory, isBusy } = useDeleteCategory();
+  const { DeleteCategory } = useDeleteCategory();
   const { setIsShowModal, isShowModal } = useToggleModalContext();
   const [dataId, setDataId] = useState<string>();
 

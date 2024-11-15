@@ -1,4 +1,4 @@
-import { IAnnouncement, ICategories } from "@/common/interfaces";
+import { ICategories } from "@/common/interfaces";
 import { httpUpdateCategoryById } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useState } from "react";

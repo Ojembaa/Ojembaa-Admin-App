@@ -6,23 +6,16 @@ import { Spinner } from "@/components/Common/Spinner";
 import Search from "@/components/Admin/Search";
 import Button from "@/components/Admin/button";
 import withAuth from "@/common/HOC/withAuth";
-import { ISettings } from "@/common/interfaces";
 import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { useDeleteCategory } from "@/hooks/useDeleteCategory";
-import Swal from "sweetalert2";
-import SettingsModal from "./SettingModal";
+// import SettingsModal from "./SettingModal";
 import { useGetSettings } from "@/hooks/useGetSettings";
 
 const Settings = () => {
   const { settings, fetchSettings, loading } = useGetSettings();
-  const { DeleteCategory, isBusy } = useDeleteCategory();
-  const { setIsShowModal, isShowModal } = useToggleModalContext();
-  const [dataId, setDataId] = useState<string>();
+  const { setIsShowModal } = useToggleModalContext();
 
   const [filteredSettings, setFilteredSettings] = useState<any>([]);
-  console.log(filteredSettings, "filteredSettings");
 
   useEffect(() => {
     const results = Object.entries(settings).map(([key, value]) => ({
@@ -40,10 +33,10 @@ const Settings = () => {
     setIsShowModal((preVal) => !preVal);
   };
 
-  const handleEditCategoryModal = (id: string) => {
-    setDataId(id);
-    setIsShowModal((preVal) => !preVal);
-  };
+  // const handleEditCategoryModal = (id: string) => {
+  //   setDataId(id);
+  //   setIsShowModal((preVal) => !preVal);
+  // };
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {
@@ -58,45 +51,45 @@ const Settings = () => {
     }
   };
 
-  const deleteItem = (id: string) => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "p-3 bg-red-700  rounded-lg text-white mx-2",
-        cancelButton: "p-3 bg-green-700 rounded-lg text-white ",
-      },
-      buttonsStyling: false,
-    });
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          await DeleteCategory(id);
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-          // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire({
-            title: "Cancelled",
-            text: "Your imaginary file is safe :)",
-            icon: "error",
-          });
-        }
-      });
-  };
+  // const deleteItem = (id: string) => {
+  //   const swalWithBootstrapButtons = Swal.mixin({
+  //     customClass: {
+  //       confirmButton: "p-3 bg-red-700  rounded-lg text-white mx-2",
+  //       cancelButton: "p-3 bg-green-700 rounded-lg text-white ",
+  //     },
+  //     buttonsStyling: false,
+  //   });
+  //   swalWithBootstrapButtons
+  //     .fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Yes, delete it!",
+  //       cancelButtonText: "No, cancel!",
+  //       reverseButtons: true,
+  //     })
+  //     .then(async (result) => {
+  //       if (result.isConfirmed) {
+  //         await DeleteCategory(id);
+  //         swalWithBootstrapButtons.fire({
+  //           title: "Deleted!",
+  //           text: "Your file has been deleted.",
+  //           icon: "success",
+  //         });
+  //         // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
+  //       } else if (
+  //         /* Read more about handling dismissals below */
+  //         result.dismiss === Swal.DismissReason.cancel
+  //       ) {
+  //         swalWithBootstrapButtons.fire({
+  //           title: "Cancelled",
+  //           text: "Your imaginary file is safe :)",
+  //           icon: "error",
+  //         });
+  //       }
+  //     });
+  // };
 
   return (
     <AdminLayout>
@@ -131,13 +124,15 @@ const Settings = () => {
             <tbody className="divide-y divide-y-50">
               {!loading &&
                 filteredSettings?.map((data: any, idx: number) => {
+                  const [key, value] = Object.entries(data)[0];
+
                   return (
                     <tr className="" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.name}
+                        {key}
                       </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.value}
+                        {value as React.ReactNode}
                       </td>
                       <td className="p-2 text-sm text-gray-700">
                         {" "}
@@ -177,17 +172,17 @@ const Settings = () => {
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
-                                      <Link href={`/categories/`}>
-                                        <button
-                                          className={`${
-                                            active
-                                              ? "bg-gray-200 text-black"
-                                              : "text-black-900"
-                                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                        >
-                                          View
-                                        </button>
-                                      </Link>
+                                      // <Link href={`/categories/`}>
+                                      <button
+                                        className={`${
+                                          active
+                                            ? "bg-gray-200 text-black"
+                                            : "text-black-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        View
+                                      </button>
+                                      // </Link>
                                     )}
                                   </Menu.Item>
                                 </div>
@@ -214,7 +209,6 @@ const Settings = () => {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                        onClick={() => deleteItem("3")}
                                         className={`${
                                           active
                                             ? "bg-gray-200 text-red-700"
@@ -249,9 +243,9 @@ const Settings = () => {
             )
           )}
         </div>
-        {isShowModal && (
+        {/* {isShowModal && (
           <SettingsModal handleShowModal={handleShowModal} dataId={dataId} />
-        )}
+        )} */}
       </Container>
     </AdminLayout>
   );
