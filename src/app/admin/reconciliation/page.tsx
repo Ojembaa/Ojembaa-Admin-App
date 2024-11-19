@@ -1,46 +1,45 @@
 "use client";
 import Container from "@/components/Admin/Container";
 import AdminLayout from "../../../components/Admin/layout";
-import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { useGetbulletins } from "@/hooks/useGetBulletins";
 import { Spinner } from "@/components/Common/Spinner";
-import dayjs from "dayjs";
-import Search from "@/components/Admin/Search";
-import Button from "@/components/Admin/button";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import { useDeleteBulletinItem } from "@/hooks/useDeleteItem";
-import Link from "next/link";
-import { BulletinStatusEnum, IBulletin } from "@/common/interfaces";
 import withAuth from "@/common/HOC/withAuth";
-import PaginationButton from "@/components/Common/Pagination";
-// import PaginationButton from "@/components/Common/PaginationButton.old";
+import { ICategories } from "@/common/interfaces";
+import { useGetCategories } from "@/hooks/useGetCategories";
+import CategoryModal from "@/app/admin/categories/CategoryModal";
+import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
+import { Menu, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { useDeleteCategory } from "@/hooks/useDeleteCategory";
+import Swal from "sweetalert2";
 
-const BulletinListPage = () => {
-  const router = useRouter();
+const Reconciliation = () => {
+  const { categories, fetchCategories, loading } = useGetCategories();
+  const { DeleteCategory } = useDeleteCategory();
+  const { setIsShowModal, isShowModal } = useToggleModalContext();
+  const [dataId, setDataId] = useState<string>();
 
-  const { DeleteBulletinItem } = useDeleteBulletinItem();
-  const { fetchBulletins, bulletins, nextPageToken, loading } =
-    useGetbulletins();
-  const [fillteredBulletins, setFilteedBulletins] = useState<IBulletin[]>([]);
-
-  const [params, setParams] = useState<{
-    limit: number;
-    search: string | null;
-  }>({ limit: 10, search: null });
+  const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
+    []
+  );
 
   useEffect(() => {
-    setFilteedBulletins(bulletins);
-  }, [bulletins]);
+    setFilteredCategories(categories);
+  }, [categories]);
 
   useEffect(() => {
-    fetchBulletins({
-      limit: params.limit,
-      // start_date: "2024-03-08",
-      // end_date: "2024-03-22",
-    });
+    fetchCategories();
   }, []);
+
+  const handleShowModal = () => {
+    setIsShowModal((preVal) => !preVal);
+  };
+
+  const handleEditCategoryModal = (id: string) => {
+    setDataId(id);
+    setIsShowModal((preVal) => !preVal);
+  };
+
 
   const deleteItem = (id: string) => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -62,7 +61,7 @@ const BulletinListPage = () => {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          await DeleteBulletinItem(id);
+          await DeleteCategory(id);
           swalWithBootstrapButtons.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
@@ -82,74 +81,37 @@ const BulletinListPage = () => {
       });
   };
 
-  const handleSearch = (query: string) => {
-    if (query.trim() === "") {
-      setFilteedBulletins(bulletins);
-    } else {
-      const bulletinSearchResults =
-        bulletins &&
-        bulletins.filter((item) => {
-          return (
-            item.themeForTheQuarter
-              .toLowerCase()
-              .includes(query.toLowerCase()) ||
-            item.preacher.toLowerCase().includes(query.toLowerCase()) ||
-            item.topicForTheWeek.toLowerCase().includes(query.toLowerCase())
-          );
-        });
-      setFilteedBulletins(bulletinSearchResults);
-    }
-  };
-  const handleFetchMoreData = () => {
-    const newLimit = params.limit + 2;
-    fetchBulletins({
-      limit: newLimit,
-      search: params.search,
-      next_page_token: nextPageToken,
-    });
-    setParams((initialValue) => {
-      return {
-        ...initialValue,
-        limit: newLimit,
-      };
-    });
-  };
-
   return (
     <AdminLayout>
       <Container className="md:pl-[3.75rem] md:pr-[4.625rem] pl-[2.5rem] pt-10 pb-7">
-        <div className="flex flex-col justify-between mb-5 lg:flex-row gap-y-5">
-          <Search onSearch={handleSearch} />
-          <Button
-            type="button"
-            className="px-8 py-2 hover:bg-orange-600"
-            onClick={() => router.push("/admin/bulletin/create")}
-          >
-            Create
-          </Button>
-        </div>
+        <div className="font-bold py-3">Reconciliation</div>
         <hr className="w-full" />
+        <div className="flex justify-between my-5 space-x-8 h-52">
+          <div className="border border-slate-300 rounded-md w-full p-7">
+            <p className="font-semibold"> Reconciled</p>
+            <div className="font-semibold text-xl text-slate-500">
+              <p className="font-semibold">50,000.00</p>
+            </div>
+          </div>
+          <div className="border border-slate-300 rounded-md w-full p-7">
+            <p className="font-semibold"> Unreconciled</p>
+            <div className="font-semibold text-xl text-slate-500">
+              <p>100,000.00</p>
+            </div>
+          </div>
+        </div>
         <div className="mb-4 overflow-auto rounded-lg">
           <table className="w-full">
             <thead className="border-b border-b-gray-400 borer">
               <tr className="">
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  ID
+                  Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Created Date
+                  Amount
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Theme For The Quarter
-                </th>
-                <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Topic For The Week
-                </th>
-                <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Preacher
-                </th>{" "}
-                <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Status
+                  Date of Payment
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
                   Action
@@ -159,35 +121,17 @@ const BulletinListPage = () => {
 
             <tbody className="divide-y divide-y-50">
               {!loading &&
-                fillteredBulletins.map((data, idx: number) => {
+                filteredCategories?.map((data, idx: number) => {
                   return (
                     <tr className="" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {idx + 1}
+                        {data.name}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {dayjs(data?.createdDate).format("MMM D, YYYY")}
-                      </td>
-                      <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.themeForTheQuarter}
+                        {data.description}
                       </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.topicForTheWeek}
-                      </td>
-                      <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.preacher}{" "}
-                      </td>
-                      <td className="text-sm whitespace-nowrap">
-                        {data.status === BulletinStatusEnum.DRAFT && (
-                          <p className="p-1 text-xs text-center text-white capitalize bg-yellow-500 rounded-lg">
-                            Draft
-                          </p>
-                        )}
-                        {data.status === BulletinStatusEnum.PUBLISHED && (
-                          <p className="p-1 text-xs text-center text-white capitalize bg-green-700 rounded-lg">
-                            Published
-                          </p>
-                        )}
+                        {data.amount}
                       </td>
                       <td className="p-2 text-sm text-gray-700">
                         {" "}
@@ -227,9 +171,7 @@ const BulletinListPage = () => {
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
-                                      <Link
-                                        href={`/admin/bulletin/view/${data.id}`}
-                                      >
+                                      <Link href={`/categories/`}>
                                         <button
                                           className={`${
                                             active
@@ -247,19 +189,18 @@ const BulletinListPage = () => {
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
-                                      <Link
-                                        href={`/admin/bulletin/edit/${data.id}`}
+                                      <button
+                                        onClick={() =>
+                                          handleEditCategoryModal(data?.id)
+                                        }
+                                        className={`${
+                                          active
+                                            ? "bg-gray-200 text-black"
+                                            : "text-black-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                       >
-                                        <button
-                                          className={`${
-                                            active
-                                              ? "bg-gray-200 text-black"
-                                              : "text-black-900"
-                                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                        >
-                                          Edit
-                                        </button>
-                                      </Link>
+                                        Edit
+                                      </button>
                                     )}
                                   </Menu.Item>
                                 </div>
@@ -267,7 +208,7 @@ const BulletinListPage = () => {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                        onClick={() => deleteItem(data.id)}
+                                        onClick={() => deleteItem("3")}
                                         className={`${
                                           active
                                             ? "bg-gray-200 text-red-700"
@@ -289,35 +230,25 @@ const BulletinListPage = () => {
                 })}
             </tbody>
           </table>
-
           {loading ? (
             <div className="flex items-center justify-center h-96">
               {" "}
               <Spinner color="orange" />
             </div>
           ) : (
-            fillteredBulletins.length === 0 && (
+            filteredCategories?.length === 0 && (
               <div className="flex items-center justify-center font-bold h-96">
-                No Data created yet
+                No Data found!
               </div>
             )
           )}
         </div>
-        {/* {loading ? (
-          ""
-        ) : (
-          <PaginationButton
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
-          />
-        )} */}
-        {!loading && nextPageToken && (
-          <PaginationButton fetchDataHandler={() => handleFetchMoreData()} />
+        {isShowModal && (
+          <CategoryModal handleShowModal={handleShowModal} dataId={dataId} />
         )}
       </Container>
     </AdminLayout>
   );
 };
 
-export default withAuth(BulletinListPage);
+export default withAuth(Reconciliation);

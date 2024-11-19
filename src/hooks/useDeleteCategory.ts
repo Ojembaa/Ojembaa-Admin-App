@@ -1,18 +1,18 @@
-import { httpDeleteBulletinById } from "@/services/requests";
+import { httpDeleteCategoryById } from "@/services/requests";
 import { useCallback, useState } from "react";
-import { useGetbulletins } from "./useGetBulletins";
+import { useGetCategories } from "./useGetCategories";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
-export const useDeleteBulletinItem = () => {
+export const useDeleteCategory = () => {
   const [isBusy, setIsBusy] = useState(false);
-  const { fetchBulletins } = useGetbulletins();
+  const { fetchCategories } = useGetCategories();
 
-  const DeleteBulletinItem = useCallback(async (id: string) => {
+  const DeleteCategory = useCallback(async (id: string) => {
     try {
       setIsBusy(true);
-      await httpDeleteBulletinById(id);
-      fetchBulletins();
+      await httpDeleteCategoryById({ id });
+      fetchCategories();
     } catch (error) {
       let errorMessage: string = "";
       if (error instanceof AxiosError) {
@@ -26,5 +26,5 @@ export const useDeleteBulletinItem = () => {
     }
   }, []);
 
-  return { DeleteBulletinItem, isBusy };
+  return { DeleteCategory, isBusy };
 };

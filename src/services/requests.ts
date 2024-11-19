@@ -1,9 +1,8 @@
 import axios from "axios";
 import {
-  AppUsers,
-  BulletinStatusEnum,
-  CreateBulletinDTO,
-  IAnnouncement,
+  IAppUsers,
+  ICategories,
+  ISettings,
   ISignIn,
   ISignUpUser,
 } from "@/common/interfaces";
@@ -37,24 +36,10 @@ export async function httpRegister(authObject: ISignUpUser) {
   }
 }
 
-// Bulletin Request
-export async function httpCreateBulletin(featureObj: CreateBulletinDTO) {
+// Category Request
+export async function httpCreateCategory(value: ICategories) {
   try {
-    return axios.post(`${API_URL}/bulletin/create`, featureObj, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-export async function httpUpdateBulletinById(
-  id: string,
-  authObject: CreateBulletinDTO
-) {
-  try {
-    return await axios.patch(`${API_URL}/bulletin/${id}`, authObject, {
+    return axios.post(`${API_URL}/categories`, value, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -64,14 +49,38 @@ export async function httpUpdateBulletinById(
   }
 }
 
-export async function httpGetBulettins(query?: QueryParamDto) {
-  const response = await axios.get(`${API_URL}/bulletin`, {
+export async function httpGetCategories(query?: QueryParamDto) {
+  const response = await axios.get(`${API_URL}/categories`, {
     headers: {
       Authorization: "Bearer " + getAuthFromLocal(),
     },
     params: { ...query },
   });
   return response.data.data;
+}
+
+export async function httpUpdateCategoryById(id: string, object: ICategories) {
+  try {
+    return await axios.put(`${API_URL}/categories/${id}`, object, {
+      headers: {
+        Authorization: "Bearer " + getAuthFromLocal(),
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function httpDeleteCategoryById({ id }: { id: string }) {
+  try {
+    return axios.delete(`${API_URL}/categories/${id}`, {
+      headers: {
+        Authorization: "Bearer " + getAuthFromLocal(),
+      },
+    });
+  } catch (error) {
+    console.log(error, "error");
+  }
 }
 
 export async function httpGetBulletinById(id: string) {
@@ -86,31 +95,19 @@ export async function httpGetBulletinById(id: string) {
   }
 }
 
-export async function httpDeleteBulletinById(id: string) {
+// Setting Request
+export async function httpCreateSetting(Obj: ISettings) {
   try {
-    return axios.delete(`${API_URL}/bulletin/${id}`, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error, "error");
-  }
-}
-
-// Announcement Request
-export async function httpCreateAnnouncement(Obj: IAnnouncement) {
-  try {
-    return axios.post(`${API_URL}/announcement/create`, Obj, {
+    return axios.post(`${API_URL}/admin/settings`, Obj, {
       headers: { Authorization: "Bearer " + getAuthFromLocal() },
     });
   } catch (error) {
     console.log(error);
   }
 }
-export async function httpGetAnnouncements() {
+export async function httpGetSettings() {
   try {
-    return axios.get(`${API_URL}/announcement`, {
+    return axios.get(`${API_URL}/admin/settings`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -120,24 +117,9 @@ export async function httpGetAnnouncements() {
   }
 }
 
-export async function httpUpdateAnnouncementById(
-  id: string,
-  object: IAnnouncement
-) {
+export async function httpGetCourierDetailById(id: string) {
   try {
-    return await axios.patch(`${API_URL}/announcement/${id}`, object, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function httpGetAnnouncementById(id: string) {
-  try {
-    return axios.get(`${API_URL}/announcement/${id}`, {
+    return axios.get(`${API_URL}/admin/couriers/${id}`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
@@ -159,35 +141,6 @@ export async function httpDeleteAnnouncementById(id: string) {
   }
 }
 
-export async function httpPublishBulletin(
-  id: string,
-  status: BulletinStatusEnum
-) {
-  try {
-    return axios.patch(
-      `${API_URL}/bulletin/${id}/status?status=${status}`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + getAuthFromLocal(),
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// export async function httpCreateAnnouncement(Obj: IAnnouncement) {
-//   try {
-//     return await axios.post(`${API_URL}/announcement/create`, Obj, {
-//       headers: { Authorization: "Bearer " + getAuthFromLocal() },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 // User
 export async function httpGetUsers() {
   try {
@@ -201,9 +154,9 @@ export async function httpGetUsers() {
   }
 }
 
-export async function httpUpdateUserById(id: string, data: Partial<AppUsers>) {
+export async function httpUpdateUserById(id: string, data: Partial<IAppUsers>) {
   try {
-    return await axios.patch(`${API_URL}/auth/verify-user/${id}`, data, {
+    return await axios.patch(`${API_URL}/admin/couriers/${id}`, data, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },

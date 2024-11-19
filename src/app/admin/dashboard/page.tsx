@@ -5,35 +5,35 @@ import SalesChart from "@/components/Admin/SalesChart";
 import UsersChart from "@/components/Admin/UsersChart";
 import withAuth from "@/common/HOC/withAuth";
 import { getCurrentUser } from "@/services/store";
-import { AppUsers, IBulletin, IUser } from "@/common/interfaces";
+import { IAppUsers, ICategories, IUser } from "@/common/interfaces";
 import { useEffect, useState } from "react";
 import { useGetUsers } from "@/hooks/useGetUsers";
-import { useGetbulletins } from "@/hooks/useGetBulletins";
 import {
   NewspaperIcon,
   UserGroupIcon,
   HomeModernIcon,
 } from "@heroicons/react/24/outline";
+import { useGetCategories } from "@/hooks/useGetCategories";
 
 const Dashboard = () => {
   const currentUser: IUser = getCurrentUser();
   const { fetchAllUsers, users, loading: loadingUserData } = useGetUsers();
   const {
-    fetchBulletins,
-    bulletins,
-    loading: loadingBulletinData,
-  } = useGetbulletins();
-  const [admin, setAdmin] = useState<AppUsers[]>([]);
-  const [bulletin, setBulletin] = useState<IBulletin[]>([]);
+    categories,
+    fetchCategories,
+    loading: loadingCatrgoryData,
+  } = useGetCategories();
+  const [admin, setAdmin] = useState<IAppUsers[]>([]);
+  const [categoriesData, setCategoriesData] = useState<ICategories[]>([]);
 
   useEffect(() => {
     fetchAllUsers();
-    fetchBulletins();
+    fetchCategories();
   }, []);
   useEffect(() => {
     setAdmin(users);
-    setBulletin(bulletins);
-  }, [users, bulletins]);
+    setCategoriesData(categories);
+  }, [users, categories]);
 
   return (
     <div>
@@ -52,18 +52,18 @@ const Dashboard = () => {
             <div className=" w-full md:flex-row flex-col h-fit flex justify-between rounded-[.7684rem] gap-[1.125rem]">
               <UsersChart
                 bg_color="bg-orange-400"
-                title="Total Active Members"
-                description="Members currently using the bulletin"
-                data="User"
+                title="Recent Deliveries"
+                description="This Captures All The recent Deliveries"
+                data="Deliveries"
                 Icon={UserGroupIcon}
               />
               <UsersChart
                 bg_color="bg-[#2F4D30]"
-                title="Total created bulletins"
-                count={bulletin.length}
+                title="Total Transaction"
+                count={categoriesData?.length}
                 data="Bulletin"
                 description="Total number of bulletin created by admin"
-                loading={loadingBulletinData}
+                loading={loadingCatrgoryData}
                 Icon={NewspaperIcon}
               />
             </div>

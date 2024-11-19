@@ -1,14 +1,12 @@
-import { AppUsers } from "@/common/interfaces";
+import { IAppUsers } from "@/common/interfaces";
 import { httpGetUsers } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const useGetUsers = () => {
-  const [users, setUsers] = useState<AppUsers[]>([]);
+  const [users, setUsers] = useState<IAppUsers[]>([]);
   const [loading, setLoading] = useState(true);
-
-  console.log(users, "users");
 
   const fetchAllUsers = useCallback(async () => {
     try {

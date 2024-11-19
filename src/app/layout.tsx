@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ToggleModalContextProvider } from "@/common/context/ModalVisibilityContext";
 
 const openSans = Raleway({
   subsets: ["latin"],
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body className="text-black bg-white dark:bg-slate-700 font-opensans">
         <ToastContainer />
-        {children}
+        <ToggleModalContextProvider>{children}</ToggleModalContextProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `

@@ -1,19 +1,19 @@
-import { httpGetAnnouncementById } from "@/services/requests";
+import { ICourierDetails } from "@/common/interfaces";
+import { httpGetCourierDetailById } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useGetAnnouncementById = () => {
-  const [announcement, getAnnouncement] = useState<any>({});
+export const useGetCourierDetailById = () => {
+  const [courier, setCourier] = useState<ICourierDetails>();
   const [isLoading, setIsLoading] = useState(true);
-  //   const { setError } = useErrorContext();
 
-  const fetchAnnouncementById = useCallback(async (id: string) => {
+  const fetchCourierDetailById = useCallback(async (id: string) => {
     try {
       setIsLoading(true);
-      const data = await httpGetAnnouncementById(id);
+      const data = await httpGetCourierDetailById(id);
       if (data) {
-        getAnnouncement(data.data);
+        setCourier(data?.data.data);
       }
     } catch (error) {
       let errorMessage: string = "";
@@ -28,5 +28,5 @@ export const useGetAnnouncementById = () => {
     }
   }, []);
 
-  return { fetchAnnouncementById, announcement, isLoading };
+  return { fetchCourierDetailById, courier, isLoading };
 };

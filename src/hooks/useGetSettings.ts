@@ -1,20 +1,21 @@
-import { IAnnouncement } from "@/common/interfaces";
-import { httpGetAnnouncements } from "@/services/requests";
+import { ISettings } from "@/common/interfaces";
+import { httpGetSettings } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useGetAnnouncements = () => {
-  const [announcements, setAnnouncement] = useState<IAnnouncement[]>([]);
+export const useGetSettings = () => {
+  const [settings, setSettings] = useState<ISettings[]>([]);
   const [loading, setLoading] = useState(true);
   //   const { setError } = useErrorContext();
 
-  const fetchAnnouncements = useCallback(async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await httpGetAnnouncements();
+      const res = await httpGetSettings();
       if (res) {
-        setAnnouncement(res.data.data);
+        console.log(res.data);
+        setSettings(res.data.data);
       }
     } catch (error) {
       let errorMessage: string = "";
@@ -30,8 +31,8 @@ export const useGetAnnouncements = () => {
   }, []);
 
   useEffect(() => {
-    fetchAnnouncements();
-  }, [fetchAnnouncements]);
+    fetchSettings();
+  }, [fetchSettings]);
 
-  return { fetchAnnouncements, announcements, loading };
+  return { fetchSettings, settings, loading };
 };
