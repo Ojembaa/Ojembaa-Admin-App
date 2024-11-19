@@ -33,7 +33,7 @@ COPY --from=builder /app/package*.json ./
 RUN npm ci --only=production
 
 # Expose default Next.js port
-EXPOSE 3000
+EXPOSE 3800
 
 # Start the application
 CMD ["npm", "run", "start"]
