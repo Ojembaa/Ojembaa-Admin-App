@@ -71,7 +71,7 @@ export async function httpUpdateCategoryById(id: string, object: ICategories) {
   }
 }
 
-export async function httpDeleteCategoryById(id: string) {
+export async function httpDeleteCategoryById({ id }: { id: string }) {
   try {
     return axios.delete(`${API_URL}/categories/${id}`, {
       headers: {

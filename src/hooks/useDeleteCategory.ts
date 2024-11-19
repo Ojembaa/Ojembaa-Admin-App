@@ -11,7 +11,7 @@ export const useDeleteCategory = () => {
   const DeleteCategory = useCallback(async (id: string) => {
     try {
       setIsBusy(true);
-      await httpDeleteCategoryById(id);
+      await httpDeleteCategoryById({ id });
       fetchCategories();
     } catch (error) {
       let errorMessage: string = "";
