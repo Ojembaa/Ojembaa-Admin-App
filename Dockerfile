@@ -1,36 +1,39 @@
-# Install dependencies only when needed
+# Stage 1: Install dependencies
 FROM node:20-buster-slim AS deps
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+# Copy only package files to install dependencies
 COPY package*.json ./
 RUN npm ci
 
-
-# Rebuild the source code only when needed
+# Stage 2: Build the application
 FROM node:20-buster-slim AS builder
 WORKDIR /app
+
+# Copy dependencies
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Build the Next.js application
 RUN npm run build
 
-
-# Production image, copy all the files and run next
+# Stage 3: Production image
 FROM node:20-buster-slim AS runner
 WORKDIR /app
+
+# Set environment to production
 ENV NODE_ENV production
 
-COPY package*.json ./
-
-# Disable husky
-RUN npm pkg delete scripts.prepare
+# Copy only the necessary files
+COPY --from=builder /app/.next ./next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
 
 # Install only production dependencies
 RUN npm ci --only=production
 
-# Copy from build stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
+# Expose default Next.js port
+EXPOSE 3000
 
-CMD ["node", "dist/main"]
+# Start the application
+CMD ["npm", "run", "start"]
