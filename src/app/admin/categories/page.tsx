@@ -76,12 +76,7 @@ const Category = () => {
       .then(async (result) => {
         if (result.isConfirmed) {
           await DeleteCategory(id);
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-          // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
+          await fetchCategories();
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -217,7 +212,7 @@ const Category = () => {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                        onClick={() => deleteItem("3")}
+                                        onClick={() => deleteItem(data.id)}
                                         className={`${
                                           active
                                             ? "bg-gray-200 text-red-700"

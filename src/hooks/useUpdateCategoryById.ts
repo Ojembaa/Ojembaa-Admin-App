@@ -1,3 +1,4 @@
+import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 import { ICategories } from "@/common/interfaces";
 import { httpUpdateCategoryById } from "@/services/requests";
 import { AxiosError } from "axios";
@@ -7,6 +8,8 @@ import { toast } from "react-toastify";
 export const useUpdateCategoryById = () => {
   const [category, setCategory] = useState<any>([]);
   const [loading, setLoading] = useState(false);
+  const { setIsShowModal } = useToggleModalContext();
+
   //   const { setError } = useErrorContext();
 
   const UpdateCategoryData = useCallback(
@@ -16,8 +19,10 @@ export const useUpdateCategoryById = () => {
         const result = await httpUpdateCategoryById(id, data);
         if (result) {
           setCategory(result.data.data);
-          toast.success("Announcement updated successfully");
+          toast.success("Category updated successfully");
         }
+        setIsShowModal(false);
+        window.location.reload();
       } catch (error) {
         let errorMessage: string = "";
         if (error instanceof AxiosError) {

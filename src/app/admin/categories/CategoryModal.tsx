@@ -69,7 +69,8 @@ const CategoryModal = ({ handleShowModal, dataId }: IModal) => {
   const onSubmit = (data: ICategories) => {
     data.amount = +data.amount;
     if (dataId) {
-      return UpdateCategoryData(dataId, data);
+      UpdateCategoryData(dataId, data);
+      return fetchCategories();
     }
     CreateCategory(data);
     reset();

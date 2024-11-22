@@ -93,18 +93,6 @@ export async function httpGetReconciliationData(query?: QueryParamDto) {
   return response.data.data;
 }
 
-export async function httpGetBulletinById(id: string) {
-  try {
-    return axios.get(`${API_URL}/bulletin/${id}`, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error, "error");
-  }
-}
-
 // Setting Request
 export async function httpCreateSetting(Obj: ISettings) {
   try {
@@ -130,18 +118,6 @@ export async function httpGetSettings() {
 export async function httpGetCourierDetailById(id: string) {
   try {
     return axios.get(`${API_URL}/admin/couriers/${id}`, {
-      headers: {
-        Authorization: "Bearer " + getAuthFromLocal(),
-      },
-    });
-  } catch (error) {
-    console.log(error, "error");
-  }
-}
-
-export async function httpDeleteAnnouncementById(id: string) {
-  try {
-    return axios.delete(`${API_URL}/announcement/${id}`, {
       headers: {
         Authorization: "Bearer " + getAuthFromLocal(),
       },
