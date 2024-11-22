@@ -21,8 +21,6 @@ const Category = () => {
   const { setIsShowModal, isShowModal } = useToggleModalContext();
   const [dataId, setDataId] = useState<string>();
 
-  console.log(categories, "categories");
-
   const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
     []
   );

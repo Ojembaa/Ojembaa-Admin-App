@@ -24,6 +24,7 @@
     "jwt-decode": "^4.0.0",
     "multiselect-react-dropdown": "^2.0.25",
     "next": "13.4.19",
+    "numeral": "^2.0.6",
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "14.2.0",
+    "@types/numeral": "^2.0.5",
     "@vitest/ui": "2.1.3",
     "jsdom": "24.0.0",
     "vitest": "^2.1.3"

@@ -21,7 +21,6 @@ const Settings = () => {
     const results = Object.entries(settings).map(([key, value]) => ({
       [key]: value,
     }));
-    console.log(results);
     setFilteredSettings(results);
   }, [settings]);
 
@@ -32,11 +31,6 @@ const Settings = () => {
   const handleShowModal = () => {
     setIsShowModal((preVal) => !preVal);
   };
-
-  // const handleEditCategoryModal = (id: string) => {
-  //   setDataId(id);
-  //   setIsShowModal((preVal) => !preVal);
-  // };
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {

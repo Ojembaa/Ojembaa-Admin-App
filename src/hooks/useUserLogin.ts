@@ -23,7 +23,6 @@ export const useLoginUser = () => {
         setUserData(res.data.data);
         sessionStorage.setItem("token", res.data.data.accessToken);
         const decodedToken = decodeToken(res.data.data.accessToken);
-        console.log("decodedToken", decodedToken);
         sessionStorage.setItem("user", JSON.stringify(decodedToken));
         setIsAuthenticated(true);
         router.push("/admin/dashboard");

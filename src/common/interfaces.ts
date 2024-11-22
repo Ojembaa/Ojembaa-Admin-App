@@ -130,6 +130,31 @@ export interface ICategories {
   amount: number;
 }
 
+export interface ITransaction {
+  id: string;
+  courierId: string;
+  courier: IUser;
+  type: TransactionEnums;
+  amount: number;
+  prevBalance: number;
+  currBalance: number;
+  recordId: string;
+  proof: string;
+  status: TransactionStatus;
+}
+
+export enum TransactionEnums {
+  DELIVERY = "DELIVERY",
+  RECONCILIATION = "RECONCILIATION",
+}
+
+export enum TransactionStatus {
+  PENDING = "pending",
+  SUCCESS = "success",
+  FAILED = "failed",
+  REJECTED = "rejected",
+}
+
 export enum UserStatusEnum {
   ACTIVE = "active",
   INACTIVE = "inactive",
