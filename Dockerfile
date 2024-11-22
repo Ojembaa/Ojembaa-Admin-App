@@ -16,7 +16,7 @@ FROM node:20-buster-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-EXPOSE 3000
+EXPOSE 3100
 
 # Copy only the necessary files
 COPY --from=builder /app/.next ./.next

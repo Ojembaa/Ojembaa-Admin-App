@@ -14,7 +14,6 @@ export const useGetSettings = () => {
       setLoading(true);
       const res = await httpGetSettings();
       if (res) {
-        console.log(res.data);
         setSettings(res.data.data);
       }
     } catch (error) {

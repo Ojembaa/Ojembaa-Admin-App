@@ -83,6 +83,16 @@ export async function httpDeleteCategoryById({ id }: { id: string }) {
   }
 }
 
+export async function httpGetReconciliationData(query?: QueryParamDto) {
+  const response = await axios.get(`${API_URL}/admin/transactions`, {
+    headers: {
+      Authorization: "Bearer " + getAuthFromLocal(),
+    },
+    params: { ...query },
+  });
+  return response.data.data;
+}
+
 export async function httpGetBulletinById(id: string) {
   try {
     return axios.get(`${API_URL}/bulletin/${id}`, {

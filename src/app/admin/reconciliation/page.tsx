@@ -4,31 +4,37 @@ import AdminLayout from "../../../components/Admin/layout";
 import { Fragment, useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
 import withAuth from "@/common/HOC/withAuth";
-import { ICategories } from "@/common/interfaces";
-import { useGetCategories } from "@/hooks/useGetCategories";
+import { IAppUsers, ITransaction, TransactionEnums } from "@/common/interfaces";
 import CategoryModal from "@/app/admin/categories/CategoryModal";
 import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
-import { useDeleteCategory } from "@/hooks/useDeleteCategory";
-import Swal from "sweetalert2";
+import { useGetReconciliation } from "@/hooks/useGetReconciliation";
+import numeral from "numeral";
+import { useGetUsers } from "@/hooks/useGetUsers";
 
 const Reconciliation = () => {
-  const { categories, fetchCategories, loading } = useGetCategories();
-  const { DeleteCategory } = useDeleteCategory();
+  const { fetchReconciliationData, reconciliation, loading } =
+    useGetReconciliation();
+  const { fetchAllUsers, users, loading: userLoading } = useGetUsers();
   const { setIsShowModal, isShowModal } = useToggleModalContext();
   const [dataId, setDataId] = useState<string>();
 
-  const [filteredCategories, setFilteredCategories] = useState<ICategories[]>(
+  const [reconciliationData, setReconciliationData] = useState<ITransaction[]>(
     []
   );
+  const [totalUnreconciledAmount, setTotalUnreconciledAmount] =
+    useState<number>();
+  const [reconciledAmount, setTotalReconciledAmount] = useState<number>();
+  const [reconciledUsers, setReconciledUsers] = useState<IAppUsers[]>([]);
 
   useEffect(() => {
-    setFilteredCategories(categories);
-  }, [categories]);
+    setReconciliationData(reconciliation);
+  }, [reconciliation]);
 
   useEffect(() => {
-    fetchCategories();
+    fetchReconciliationData();
+    fetchAllUsers();
   }, []);
 
   const handleShowModal = () => {
@@ -40,46 +46,31 @@ const Reconciliation = () => {
     setIsShowModal((preVal) => !preVal);
   };
 
+  useEffect(() => {
+    const unReconciledAmount = reconciliationData.filter(
+      (item) => item.type === TransactionEnums.DELIVERY
+    );
+    const amountToPay = unReconciledAmount.map((item) => item.amount);
 
-  const deleteItem = (id: string) => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "p-3 bg-red-700  rounded-lg text-white mx-2",
-        cancelButton: "p-3 bg-green-700 rounded-lg text-white ",
-      },
-      buttonsStyling: false,
-    });
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          await DeleteCategory(id);
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-          // fetchBulletins(); //TODO: Optimize the responsd afte deleting files
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire({
-            title: "Cancelled",
-            text: "Your imaginary file is safe :)",
-            icon: "error",
-          });
-        }
-      });
-  };
+    const total = amountToPay.reduce((acc, curr) => acc + curr, 0);
+    setTotalUnreconciledAmount(total);
+  }, [reconciliationData]);
+
+  useEffect(() => {
+    const reconciledList = reconciliationData.filter(
+      (item) => item.type === TransactionEnums.RECONCILIATION
+    );
+    const amountPaid = reconciledList.map((item) => item.amount);
+
+    const reconciledUsers = users.filter((user) =>
+      reconciledList.some((item) => item.courierId === user.id)
+    );
+
+    setReconciledUsers(reconciledUsers);
+
+    const total = amountPaid.reduce((acc, curr) => acc + curr, 0);
+    setTotalReconciledAmount(total);
+  }, [reconciliationData]);
 
   return (
     <AdminLayout>
@@ -90,17 +81,20 @@ const Reconciliation = () => {
           <div className="border border-slate-300 rounded-md w-full p-7">
             <p className="font-semibold"> Reconciled</p>
             <div className="font-semibold text-xl text-slate-500">
-              <p className="font-semibold">50,000.00</p>
+              <p className="font-semibold">
+                {numeral(reconciledAmount).format("0,0.00")}
+              </p>
             </div>
           </div>
           <div className="border border-slate-300 rounded-md w-full p-7">
             <p className="font-semibold"> Unreconciled</p>
             <div className="font-semibold text-xl text-slate-500">
-              <p>100,000.00</p>
+              <p>{numeral(totalUnreconciledAmount).format("N0,0.00")}</p>
             </div>
           </div>
         </div>
         <div className="mb-4 overflow-auto rounded-lg">
+          <div className="font-bold py-3">Reconciled Users</div>
           <table className="w-full">
             <thead className="border-b border-b-gray-400 borer">
               <tr className="">
@@ -108,10 +102,10 @@ const Reconciliation = () => {
                   Name
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Amount
+                  Email
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Date of Payment
+                  Amount{" "}
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
                   Action
@@ -120,18 +114,18 @@ const Reconciliation = () => {
             </thead>
 
             <tbody className="divide-y divide-y-50">
-              {!loading &&
-                filteredCategories?.map((data, idx: number) => {
+              {!userLoading &&
+                reconciledUsers?.map((data) => {
                   return (
-                    <tr className="" key={idx}>
+                    <tr className="" key={data.id}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.name}
+                        {`${data.firstName} ${data.lastName}`}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data.description}
+                        {data?.email}
                       </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data.amount}
+                        {data?.role}
                       </td>
                       <td className="p-2 text-sm text-gray-700">
                         {" "}
@@ -204,22 +198,6 @@ const Reconciliation = () => {
                                     )}
                                   </Menu.Item>
                                 </div>
-                                <div className="px-1 py-1 ">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        onClick={() => deleteItem("3")}
-                                        className={`${
-                                          active
-                                            ? "bg-gray-200 text-red-700"
-                                            : "text-red-500"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        Delete
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </div>
                               </Menu.Items>
                             </Transition>
                           </Menu>
@@ -236,7 +214,7 @@ const Reconciliation = () => {
               <Spinner color="orange" />
             </div>
           ) : (
-            filteredCategories?.length === 0 && (
+            reconciliationData?.length === 0 && (
               <div className="flex items-center justify-center font-bold h-96">
                 No Data found!
               </div>

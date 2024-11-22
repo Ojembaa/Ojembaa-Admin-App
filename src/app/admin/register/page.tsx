@@ -46,7 +46,6 @@ const Register = () => {
     if (data.password !== data.confirmPassword) {
       return toast.error("Password does not match");
     }
-    // return console.log("data", data);
     setRegisterUser(data);
   };
 
