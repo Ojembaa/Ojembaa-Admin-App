@@ -2,6 +2,8 @@ import { IBaseEntity } from "./base.interface";
 import { UserRole } from "./constants/enum";
 
 export interface ISignUpUser {
+  firstName: string;
+  lastName: string;
   phone: string;
   password: string;
   email: string;
