@@ -19,7 +19,7 @@ const UserViewPage = ({ params }: { params: { slug: string } }) => {
     isLoading: loading,
   } = useGetCourierDetailById();
 
-  console.log(courier, "courier");
+  console.log(userDetail?.isActivated, "status");
 
   useEffect(() => {
     fetchCourierDetailById(userID);
@@ -142,15 +142,25 @@ const UserViewPage = ({ params }: { params: { slug: string } }) => {
                   </span>
                 </div>
 
-                <div className="font-bold flex  items-center">
-                  <div className="pr-5">
-                    <p>Status:</p>
-                  </div>{" "}
-                  <span className="capitalize font-bold  py-1 px-5 bg-green-400 rounded-2xl text-white text-center">
-                    {" "}
-                    {userDetail?.status}
-                  </span>
-                </div>
+                {userDetail?.isActivated ? (
+                  <div className="font-bold flex  items-center">
+                    <div className="pr-5">
+                      <p>Status:</p>
+                    </div>{" "}
+                    <span className="capitalize font-bold  py-1 px-5 rounded-2xl text-white text-center bg-green-400">
+                      Active
+                    </span>
+                  </div>
+                ) : (
+                  <div className="font-bold flex  items-center">
+                    <div className="pr-5">
+                      <p>Status:</p>
+                    </div>{" "}
+                    <span className="capitalize font-bold  py-1 px-5 rounded-2xl text-white text-center bg-red-500">
+                      Inactive
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="mt-10">

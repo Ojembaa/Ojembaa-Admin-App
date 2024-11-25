@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 export const useCreateCategory = () => {
   const [category, setCategory] = useState<ICategories[]>([]);
   const [loading, setLoading] = useState(false);
-  //   const { setError } = useErrorContext();
   const { setIsShowModal } = useToggleModalContext();
 
   // TODO: correct the empty string that is being sent to the server.
@@ -18,7 +17,6 @@ export const useCreateCategory = () => {
       setLoading(true);
       const res = await httpCreateCategory(data);
       if (res) {
-        console.log("category", data);
         setCategory(res.data);
         toast.success("Category created successfully");
       }

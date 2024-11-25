@@ -11,7 +11,6 @@ import { useGetCategories } from "@/hooks/useGetCategories";
 import CategoryModal from "@/app/admin/categories/CategoryModal";
 import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
 import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
 import { useDeleteCategory } from "@/hooks/useDeleteCategory";
 import Swal from "sweetalert2";
 
@@ -172,7 +171,7 @@ const Category = () => {
                               leaveTo="transform opacity-0 scale-95"
                             >
                               <Menu.Items className="absolute right-0 z-50 w-40 mt-0 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="px-1 py-1 ">
+                                {/* <div className="px-1 py-1 ">
                                   <Menu.Item>
                                     {({ active }) => (
                                       <Link href={`/categories/`}>
@@ -188,7 +187,7 @@ const Category = () => {
                                       </Link>
                                     )}
                                   </Menu.Item>
-                                </div>
+                                </div> */}
 
                                 <div className="px-1 py-1 ">
                                   <Menu.Item>

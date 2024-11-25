@@ -9,12 +9,17 @@ import {
 import { getAuthFromLocal } from "./store";
 
 export interface QueryParamDto {
+  role?: string;
+  startsAt?: Date;
+  endsAt?: Date;
   limit?: number;
-  start_date?: string;
-  end_date?: string;
-  search?: string | null;
-  next_page_token?: string | null;
-  current_date?: string;
+  page?: number;
+  status?: string;
+  sender?: string;
+  courier?: string;
+  type?: string;
+  sortBy?: string;
+  sortOrder?: "ASC" | "DESC";
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -39,6 +44,16 @@ export async function httpCreateCategory(value: ICategories) {
 
 export async function httpGetCategories(query?: QueryParamDto) {
   const response = await axios.get(`${API_URL}/categories`, {
+    headers: {
+      Authorization: "Bearer " + getAuthFromLocal(),
+    },
+    params: { ...query },
+  });
+  return response.data.data;
+}
+
+export async function httpGetTransactions(query?: QueryParamDto) {
+  const response = await axios.get(`${API_URL}/admin/transactions`, {
     headers: {
       Authorization: "Bearer " + getAuthFromLocal(),
     },

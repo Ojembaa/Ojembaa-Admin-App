@@ -20,7 +20,6 @@ export const useRegisterUser = () => {
         toast.success("Registration successful");
         router.push("/");
       }
-      console.log(data, "data");
     } catch (error) {
       let errorMessage: string = "";
       if (error instanceof AxiosError) {

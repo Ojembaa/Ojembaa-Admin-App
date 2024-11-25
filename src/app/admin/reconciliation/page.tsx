@@ -1,24 +1,29 @@
 "use client";
 import Container from "@/components/Admin/Container";
 import AdminLayout from "../../../components/Admin/layout";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "@/components/Common/Spinner";
 import withAuth from "@/common/HOC/withAuth";
-import { IAppUsers, ITransaction, TransactionEnums } from "@/common/interfaces";
+import { ITransaction, TransactionEnums } from "@/common/interfaces";
 import CategoryModal from "@/app/admin/categories/CategoryModal";
 import { useToggleModalContext } from "@/common/context/ModalVisibilityContext";
-import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
 import { useGetReconciliation } from "@/hooks/useGetReconciliation";
 import numeral from "numeral";
 import { useGetUsers } from "@/hooks/useGetUsers";
+import { useGetTransactions } from "@/hooks/useGetTransactions";
+import dayjs from "dayjs";
 
 const Reconciliation = () => {
   const { fetchReconciliationData, reconciliation, loading } =
     useGetReconciliation();
-  const { fetchAllUsers, users, loading: userLoading } = useGetUsers();
+  const {
+    fetchTransaction,
+    transactions,
+    loading: loadingTransactions,
+  } = useGetTransactions();
+  const { fetchAllUsers } = useGetUsers();
   const { setIsShowModal, isShowModal } = useToggleModalContext();
-  const [dataId, setDataId] = useState<string>();
+  const [dataId] = useState<string>();
 
   const [reconciliationData, setReconciliationData] = useState<ITransaction[]>(
     []
@@ -26,7 +31,6 @@ const Reconciliation = () => {
   const [totalUnreconciledAmount, setTotalUnreconciledAmount] =
     useState<number>();
   const [reconciledAmount, setTotalReconciledAmount] = useState<number>();
-  const [reconciledUsers, setReconciledUsers] = useState<IAppUsers[]>([]);
 
   useEffect(() => {
     setReconciliationData(reconciliation);
@@ -35,14 +39,10 @@ const Reconciliation = () => {
   useEffect(() => {
     fetchReconciliationData();
     fetchAllUsers();
+    fetchTransaction({ type: "RECONCILIATION" });
   }, []);
 
   const handleShowModal = () => {
-    setIsShowModal((preVal) => !preVal);
-  };
-
-  const handleEditCategoryModal = (id: string) => {
-    setDataId(id);
     setIsShowModal((preVal) => !preVal);
   };
 
@@ -50,7 +50,7 @@ const Reconciliation = () => {
     const unReconciledAmount = reconciliationData.filter(
       (item) => item.type === TransactionEnums.DELIVERY
     );
-    const amountToPay = unReconciledAmount.map((item) => item.amount);
+    const amountToPay = unReconciledAmount.map((item) => +item.amount);
 
     const total = amountToPay.reduce((acc, curr) => acc + curr, 0);
     setTotalUnreconciledAmount(total);
@@ -60,15 +60,14 @@ const Reconciliation = () => {
     const reconciledList = reconciliationData.filter(
       (item) => item.type === TransactionEnums.RECONCILIATION
     );
-    const amountPaid = reconciledList.map((item) => item.amount);
+    const amountPaid = reconciledList.map((item) => +item.amount);
 
-    const reconciledUsers = users.filter((user) =>
-      reconciledList.some((item) => item.courierId === user.id)
-    );
-
-    setReconciledUsers(reconciledUsers);
+    // const reconciledUsers = users.filter((user) =>
+    //   reconciledList.some((item) => item.courierId === user.id)
+    // );
 
     const total = amountPaid.reduce((acc, curr) => acc + curr, 0);
+
     setTotalReconciledAmount(total);
   }, [reconciliationData]);
 
@@ -108,26 +107,32 @@ const Reconciliation = () => {
                   Amount{" "}
                 </th>
                 <th className="p-3 text-sm font-bold tracking-wide text-left">
-                  Action
+                  Date{" "}
                 </th>
+                {/* <th className="p-3 text-sm font-bold tracking-wide text-left">
+                  Action
+                </th> */}
               </tr>
             </thead>
 
             <tbody className="divide-y divide-y-50">
-              {!userLoading &&
-                reconciledUsers?.map((data) => {
+              {!loadingTransactions &&
+                transactions?.map((data) => {
                   return (
                     <tr className="" key={data.id}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {`${data.firstName} ${data.lastName}`}
+                        {`${data?.courier?.firstName} ${data?.courier?.lastName}`}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
-                        {data?.email}
+                        {data?.courier?.email}
                       </td>
                       <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                        {data?.role}
+                        {data?.amount}
                       </td>
-                      <td className="p-2 text-sm text-gray-700">
+                      <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
+                        {dayjs(data?.createdAt).format("MMMM D, YYYY")}
+                      </td>
+                      {/* <td className="p-2 text-sm text-gray-700">
                         {" "}
                         <div className="z-10 ">
                           <Menu
@@ -202,7 +207,7 @@ const Reconciliation = () => {
                             </Transition>
                           </Menu>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}
