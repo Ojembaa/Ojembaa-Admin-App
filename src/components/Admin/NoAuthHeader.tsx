@@ -1,17 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 const NoAuthHeader = () => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [toggleHamburger, setTogglehambugger] = useState(false);
-
-  const handlehamburgerToogle = () => {
-    setShowMenu((preshowMenu) => !preshowMenu);
-    setTogglehambugger((prevToggleHamburger) => !prevToggleHamburger);
-  };
-
   return (
     <div className="sticky top-0 z-20">
       <header className="px-8 py-3 mx-auto  border-b border-black md:px-16 bg-[#F56118]">
@@ -38,23 +29,9 @@ const NoAuthHeader = () => {
           </div>
 
           {/* Hamburger button goes here */}
-          <div className="md:hidden">
-            <button
-              onClick={handlehamburgerToogle}
-              className={`${
-                !toggleHamburger ? "open" : ""
-              } z-40 block hamburger md:hidden focus:outline-none`}
-              id="menu-btn"
-              type="button"
-            >
-              <span className="hamburger-top"></span>
-              <span className="hamburger-middle"></span>
-              <span className="hamburger-bottom"></span>
-            </button>
-          </div>
         </nav>
         {/*  Mobile Menu Goes shere */}
-        <div
+        {/* <div
           id="menu"
           className={`${
             showMenu
@@ -72,7 +49,7 @@ const NoAuthHeader = () => {
               <div className="mx-2 group-hover:border-b group-hover:border-white"></div>
             </div>
           </div>
-        </div>
+        </div> */}
       </header>
     </div>
   );
