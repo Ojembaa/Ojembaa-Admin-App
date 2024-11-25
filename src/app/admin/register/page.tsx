@@ -24,8 +24,6 @@ const Register = () => {
     "password" | "text"
   >("password");
 
-  const types = ["COURIER", "SENDER", "RECEIVER", "ADMIN"];
-
   const togglePasswordVisibility = () => {
     if (inputType === "text") {
       setInputType("password");
@@ -61,54 +59,9 @@ const Register = () => {
             <div className="flex justify-center font-bold text-sm">
               Register
             </div>
-            <div className="flex gap-3">
-              <div className="w-56">
-                <label className="text-xs">Name</label>
-                <input
-                  {...register("name", { required: true })}
-                  id="name"
-                  type="text"
-                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
-                />
-                {errors?.name && (
-                  <p className=" text-red-500 text-sm italic ">
-                    Name is required
-                  </p>
-                )}
-              </div>
-              <div className="w-56">
-                <label className="text-xs">Firstname</label>
-                <input
-                  {...register("firstName", { required: true })}
-                  id="firstName"
-                  type="text"
-                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
-                />
-                {errors?.firstName && (
-                  <p className=" text-red-500 text-sm italic ">
-                    First name is required
-                  </p>
-                )}
-              </div>
-            </div>
 
             <div className="flex gap-3">
-              <div className="pt-3 w-56">
-                <label className="text-xs">Lastname</label>
-                <input
-                  {...register("lastName", { required: true })}
-                  id="lastname"
-                  type="text"
-                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg"
-                />
-                {errors?.lastName && (
-                  <p className=" text-red-500 text-sm italic ">
-                    Lastname is required
-                  </p>
-                )}
-              </div>
-
-              <div className="pt-3 w-56">
+              <div className="pt-3 w-full">
                 <label className="text-xs">Phone</label>
                 <input
                   {...register("phone", { required: true })}
@@ -124,7 +77,7 @@ const Register = () => {
               </div>
             </div>
             <div className="flex justify-start items-center gap-3">
-              <div className="pt-3 w-56">
+              <div className="pt-3 w-full">
                 <label className="text-xs">Email</label>
                 <input
                   {...register("email", { required: true })}
@@ -135,26 +88,6 @@ const Register = () => {
                 {errors?.email && (
                   <p className=" text-red-500 text-sm italic">
                     email is required
-                  </p>
-                )}
-              </div>
-
-              <div className="pt-3 w-56">
-                <label className="text-xs">Type</label>
-                <select
-                  {...register("type", { required: true })}
-                  id="type"
-                  className="focus:invalid:border-red-500 px-3 focus:outline-none focus:border-blue-300 w-full py-2 bg-transparent border border-black rounded-lg h-10"
-                >
-                  {types.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                {errors?.type && (
-                  <p className=" text-red-500 text-sm italic ">
-                    type is required
                   </p>
                 )}
               </div>
