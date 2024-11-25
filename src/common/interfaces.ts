@@ -53,9 +53,17 @@ export interface IAppUsers {
   rating: number;
   registrationFeeStatus: boolean;
   role: UserRole;
-  status: string;
+  status: UserStatus.ACTIVE;
   totalRating: number;
   username: string;
+}
+
+export enum UserStatus {
+  PENDING = "pending", // When a courier has applied but is not yet approved
+  APPROVED = "approved", // When a courier's application is accepted
+  REJECTED = "rejected", // If the application is denied
+  INACTIVE = "inactive", // If a courier decides not to renew or is deactivated
+  ACTIVE = "active", // Regular active status for all users, including couriers
 }
 
 export interface ICourierDetails {
@@ -131,7 +139,26 @@ export interface ICategories {
 export interface ITransaction {
   id: string;
   courierId: string;
-  courier: IUser;
+  courier: IAppUsers;
+  type: TransactionEnums;
+  amount: number;
+  prevBalance: number;
+  currBalance: number;
+  recordId: string;
+  proof: string;
+  status: TransactionStatus;
+  record: any;
+  approvedById: number;
+  approvedBy: IAppUsers;
+  approvalDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ITransaction {
+  id: string;
+  courierId: string;
+  courier: IAppUsers;
   type: TransactionEnums;
   amount: number;
   prevBalance: number;
