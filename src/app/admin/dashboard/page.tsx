@@ -11,8 +11,7 @@ import {
   UserGroupIcon,
   ShoppingBagIcon,
   UsersIcon,
-  ShoppingCartIcon
-  
+  ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import { useGetStats } from "@/hooks/useGetStats";
 
@@ -21,8 +20,14 @@ const Dashboard = () => {
   const { fetchAllUsers } = useGetUsers();
 
   const { fetchStat, loading: loadingStats, stats } = useGetStats();
-  const [statsData, setStatsData] = useState();
-  console.log(statsData);
+  const [statsData, setStatsData] = useState<{
+    data: {
+      packages: number;
+      couriers: number;
+      deliveries: number;
+      onlineCouriers: number;
+    };
+  }>();
 
   useEffect(() => {
     fetchAllUsers();
@@ -56,12 +61,12 @@ const Dashboard = () => {
                 description="This Captures All The recent Deliveries"
                 data="Deliveries"
                 Icon={ShoppingCartIcon}
-                count={0}
+                count={statsData?.data?.deliveries}
               />
               <UsersChart
                 bg_color="bg-[#2F4D30]"
                 title="Couriers"
-                count={0}
+                count={statsData?.data?.couriers}
                 data="Stat"
                 description="All Couriers"
                 loading={loadingStats}
@@ -72,7 +77,7 @@ const Dashboard = () => {
               <UsersChart
                 bg_color="bg-[#2F4D30]"
                 title="Online Couriers"
-                count={0}
+                count={statsData?.data?.onlineCouriers}
                 data="Online Couriers"
                 description="Total online couriers"
                 loading={loadingStats}
@@ -80,7 +85,7 @@ const Dashboard = () => {
               />
               <UsersChart
                 data="Packages"
-                count={0}
+                count={statsData?.data?.packages}
                 bg_color="bg-orange-400"
                 title="Total Packages"
                 description="Total Packages"
