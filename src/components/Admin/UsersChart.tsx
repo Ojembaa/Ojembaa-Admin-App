@@ -42,7 +42,7 @@ export default function UsersChart(dashboardCardProps: DashboardCard) {
       <p className="font-medium text-2xl">{title}</p>
       <div className="flex justify-between items-center mt-2">
         <div className="flex items-center gap-2 ">
-          <Icon width={40} height={40} />
+          <Icon width={50} height={50} />
           {loading ? (
             <Spinner width={20} height={20} />
           ) : (

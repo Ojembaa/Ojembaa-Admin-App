@@ -20,10 +20,11 @@ export const useRegisterUser = () => {
         toast.success("Registration successful");
         router.push("/");
       }
+      console.log(data, "data");
     } catch (error) {
       let errorMessage: string = "";
       if (error instanceof AxiosError) {
-        errorMessage = error?.response?.data?.message[0];
+        errorMessage = error?.response?.data?.message;
       }
       toast.error(errorMessage);
       //@ts-ignore

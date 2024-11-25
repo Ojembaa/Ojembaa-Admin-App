@@ -8,9 +8,11 @@ import { IAppUsers } from "@/common/interfaces";
 import { useEffect, useState } from "react";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import {
-  NewspaperIcon,
   UserGroupIcon,
-  HomeModernIcon,
+  ShoppingBagIcon,
+  UsersIcon,
+  ShoppingCartIcon
+  
 } from "@heroicons/react/24/outline";
 import { useGetStats } from "@/hooks/useGetStats";
 
@@ -53,7 +55,7 @@ const Dashboard = () => {
                 title="Recent Deliveries"
                 description="This Captures All The recent Deliveries"
                 data="Deliveries"
-                Icon={UserGroupIcon}
+                Icon={ShoppingCartIcon}
                 count={0}
               />
               <UsersChart
@@ -63,7 +65,7 @@ const Dashboard = () => {
                 data="Stat"
                 description="All Couriers"
                 loading={loadingStats}
-                Icon={NewspaperIcon}
+                Icon={UsersIcon}
               />
             </div>
             <div className=" w-full md:flex-row flex-col h-fit flex justify-between rounded-[.7684rem] gap-[1.125rem]">
@@ -83,7 +85,7 @@ const Dashboard = () => {
                 title="Total Packages"
                 description="Total Packages"
                 loading={loadingStats}
-                Icon={HomeModernIcon}
+                Icon={ShoppingBagIcon}
               />
             </div>
             {/* <SalesChart /> */}
