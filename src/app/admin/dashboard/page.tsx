@@ -67,7 +67,7 @@ const Dashboard = () => {
                 bg_color="bg-[#2F4D30]"
                 title="Couriers"
                 count={statsData?.data?.couriers}
-                data="Stat"
+                data="Couriers"
                 description="All Couriers"
                 loading={loadingStats}
                 Icon={UsersIcon}
