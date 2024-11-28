@@ -113,12 +113,28 @@ export async function httpGetReconciliationData(query?: QueryParamDto) {
 
 // Setting Request
 export async function httpCreateSetting(Obj: ISettings) {
-  return axios.post(`${API_URL}/admin/settings`, Obj, {
+  return axios.post(`${API_URL}/admin/settings/rider`, Obj, {
     headers: { Authorization: "Bearer " + getAuthFromLocal() },
   });
 }
 export async function httpGetSettings() {
-  return axios.get(`${API_URL}/admin/settings`, {
+  return axios.get(`${API_URL}/admin/settings/rider`, {
+    headers: {
+      Authorization: "Bearer " + getAuthFromLocal(),
+    },
+  });
+}
+
+export async function httpUpdateSettingById(id: string, data: ISettings) {
+  return await axios.patch(`${API_URL}/admin/settings/rider/${id}`, data, {
+    headers: {
+      Authorization: "Bearer " + getAuthFromLocal(),
+    },
+  });
+}
+
+export async function httpGetSettingById(id: string) {
+  return await axios.get(`${API_URL}/admin/settings/rider/${id}`, {
     headers: {
       Authorization: "Bearer " + getAuthFromLocal(),
     },
