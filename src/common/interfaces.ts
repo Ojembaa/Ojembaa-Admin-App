@@ -21,8 +21,10 @@ export interface ISignIn {
 }
 
 export interface ISettings {
-  name: string;
-  value: string;
+  id: string;
+  weightClass: string;
+  baseFare: number;
+  amountPerKM: number;
 }
 
 export interface IUser extends ISignUpUser, Omit<ISignUpUser, "password"> {
