@@ -13,8 +13,10 @@ const Settings = () => {
   const { settings, fetchSettings, loading } = useGetSettings();
   const { setIsShowModal, isShowModal } = useToggleModalContext();
   const [dataId, setDataId] = useState<string>();
+  const [weight, setWeight] = useState("");
 
-  const handleEditSettingModal = (id: string) => {
+  const handleEditSettingModal = (weight: string, id: string) => {
+    setWeight(weight);
     setDataId(id);
     setIsShowModal((preVal) => !preVal);
   };
@@ -105,7 +107,10 @@ const Settings = () => {
                                     {({ active }) => (
                                       <button
                                         onClick={() =>
-                                          handleEditSettingModal(data?.id)
+                                          handleEditSettingModal(
+                                            data?.weightClass,
+                                            data.id
+                                          )
                                         }
                                         className={`${
                                           active
@@ -142,7 +147,11 @@ const Settings = () => {
           )}
         </div>
         {isShowModal && (
-          <SettingsModal handleShowModal={handleShowModal} dataId={dataId} />
+          <SettingsModal
+            handleShowModal={handleShowModal}
+            dataId={dataId!}
+            weight={weight}
+          />
         )}
       </Container>
     </AdminLayout>

@@ -19,8 +19,6 @@ const UserViewPage = ({ params }: { params: { slug: string } }) => {
     isLoading: loading,
   } = useGetCourierDetailById();
 
-  console.log(userDetail?.isActivated, "status");
-
   useEffect(() => {
     fetchCourierDetailById(userID);
     setUserDetail(courier);

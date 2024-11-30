@@ -5,14 +5,15 @@ import Input from "@/components/Admin/input";
 import Button from "@/components/Admin/button";
 import { Spinner } from "@/components/Common/Spinner";
 import { useUpdateSettingsById } from "@/hooks/useUpdateSettingsById";
-import { useGetSettingById } from "@/hooks/useGetSettingById";
+import { useGetSettingByWeight } from "@/hooks/useGetSettingByWeight";
 
 interface ISettingsModal {
   handleShowModal: () => void;
-  dataId?: string;
+  dataId: string;
+  weight?: string;
 }
 
-const SettingsModal = ({ handleShowModal, dataId }: ISettingsModal) => {
+const SettingsModal = ({ handleShowModal, dataId, weight }: ISettingsModal) => {
   const {
     register,
     handleSubmit,
@@ -22,12 +23,12 @@ const SettingsModal = ({ handleShowModal, dataId }: ISettingsModal) => {
   } = useForm<ISettings>();
 
   const { UpdateSettingsData, loading: isBusy } = useUpdateSettingsById();
-  const { GetSettingById, setting, loading } = useGetSettingById();
+  const { GetSettingByWeight, setting, loading } = useGetSettingByWeight();
   const [dataToEdit, setDataToEdit] = useState<ISettings>();
 
   useEffect(() => {
-    GetSettingById(dataId!);
-  }, [dataId]);
+    GetSettingByWeight(weight!);
+  }, [weight]);
 
   useEffect(() => {
     if (setting) {
@@ -53,9 +54,10 @@ const SettingsModal = ({ handleShowModal, dataId }: ISettingsModal) => {
   }, [dataToEdit]);
 
   const onSubmit = (data: ISettings) => {
-    if (dataId) {
-      return UpdateSettingsData(dataId, data);
-    }
+    data.baseFare = +data.baseFare;
+    data.amountPerKM = +data.amountPerKM;
+
+    UpdateSettingsData(dataId, data);
     reset();
   };
   return (
@@ -116,7 +118,7 @@ const SettingsModal = ({ handleShowModal, dataId }: ISettingsModal) => {
 
             <div>
               <Input
-                label="Amount Per KM"
+                label="Amount Per KM (&#8358;)"
                 type="number"
                 {...register("amountPerKM", {
                   required: "Amount Per KM is required",
@@ -135,7 +137,7 @@ const SettingsModal = ({ handleShowModal, dataId }: ISettingsModal) => {
                 type="submit"
                 disabled={loading}
               >
-                {loading || isBusy ? "loading..." : "Update"}
+                {loading || isBusy ? "Updating ..." : "Update"}
               </Button>
             </div>
           </form>
