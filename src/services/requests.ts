@@ -133,8 +133,8 @@ export async function httpUpdateSettingById(id: string, data: ISettings) {
   });
 }
 
-export async function httpGetSettingById(id: string) {
-  return await axios.get(`${API_URL}/admin/settings/rider/${id}`, {
+export async function httpGetSettingByWeight(weight: string) {
+  return await axios.get(`${API_URL}/admin/settings/rider/${weight}`, {
     headers: {
       Authorization: "Bearer " + getAuthFromLocal(),
     },

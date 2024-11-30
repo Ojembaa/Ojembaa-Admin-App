@@ -1,17 +1,17 @@
 import { ISettings } from "@/common/interfaces";
-import { httpGetSettingById } from "@/services/requests";
+import { httpGetSettingByWeight } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useGetSettingById = () => {
+export const useGetSettingByWeight = () => {
   const [setting, setSetting] = useState<ISettings>();
   const [loading, setLoading] = useState(false);
 
-  const GetSettingById = useCallback(async (id: string) => {
+  const GetSettingByWeight = useCallback(async (weight: string) => {
     try {
       setLoading(true);
-      const result = await httpGetSettingById(id);
+      const result = await httpGetSettingByWeight(weight);
       if (result) {
         setSetting(result.data.data);
       }
@@ -26,5 +26,5 @@ export const useGetSettingById = () => {
     }
   }, []);
 
-  return { GetSettingById, setting, loading };
+  return { GetSettingByWeight, setting, loading };
 };
