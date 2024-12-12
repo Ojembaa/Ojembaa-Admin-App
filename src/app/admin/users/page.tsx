@@ -7,11 +7,12 @@ import Search from "@/components/Admin/Search";
 import withAuth from "@/common/HOC/withAuth";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import Switch from "react-switch";
-import { IAppUsers } from "@/common/interfaces";
+import { IAppUsers, UserStatus } from "@/common/interfaces";
 import { useUpdateUserDetail } from "@/hooks/useUpdateUser";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { UserRole } from "@/common/constants/enum";
 
 const User = () => {
   const { fetchAllUsers, users, loading, setLoading } = useGetUsers();
@@ -26,13 +27,30 @@ const User = () => {
     fetchAllUsers();
   }, []);
 
-  const updateUserStatus = async (id: string, status: boolean) => {
+  const updateUserStatus = async (
+    id: string,
+    activate: boolean,
+    status: UserStatus,
+    role: UserRole
+  ) => {
     try {
       setLoading(true);
-      await UpdateUserDetailById(id, { activate: status });
-      fetchAllUsers();
+      console.log(role, "role", status, "status");
+      if (role === UserRole.SENDER && status === UserStatus.ACTIVE) {
+        await UpdateUserDetailById(id, { status: UserStatus.INACTIVE });
+        console.log("set the status to inactive");
+        return;
+      }
+      if (role === UserRole.SENDER && status === UserStatus.INACTIVE) {
+        await UpdateUserDetailById(id, { status: UserStatus.ACTIVE });
+        console.log("set the status to active");
+        return;
+      }
+      await UpdateUserDetailById(id, { activate: activate });
     } catch (error) {
+      console.log(error);
     } finally {
+      await fetchAllUsers();
       setLoading(false);
     }
   };
@@ -149,7 +167,12 @@ const User = () => {
                       <td className="text-sm whitespace-nowrap py-2">
                         <Switch
                           onChange={() =>
-                            updateUserStatus(data.id!, !data.isActivated)
+                            updateUserStatus(
+                              data.id!,
+                              !data.isActivated,
+                              data?.status,
+                              data?.role
+                            )
                           }
                           checked={data.isActivated}
                         />
