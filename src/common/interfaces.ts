@@ -55,7 +55,7 @@ export interface IAppUsers {
   rating: number;
   registrationFeeStatus: boolean;
   role: UserRole;
-  status: UserStatus.ACTIVE;
+  status: UserStatus;
   totalRating: number;
   username: string;
 }
