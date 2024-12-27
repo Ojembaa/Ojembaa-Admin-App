@@ -1,6 +1,7 @@
 import React from "react";
 import { Spinner } from "../Common/Spinner";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 
 const DeliveryList = ({
   loading,
@@ -35,7 +36,10 @@ const DeliveryList = ({
                 Delivery Address
               </th>
               <th className="p-3 text-sm font-bold tracking-wide text-left">
-                Distance
+                Date of Booking
+              </th>
+              <th className="p-3 text-sm font-bold tracking-wide text-left">
+                Amount
               </th>
               <th className="p-3 text-sm font-bold tracking-wide text-left">
                 Status
@@ -70,7 +74,10 @@ const DeliveryList = ({
                       {data.deliveryAddress}
                     </td>
                     <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
-                      {data?.distance}{" "}
+                      {dayjs(data?.courier?.createdAt).format("M/D/YYYY")}
+                    </td>
+                    <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
+                    &#8358;{data?.totalCost}{" "}
                     </td>
                     <td className="p-2 text-sm text-gray-700 whitespace-nowrap">
                       {data.status}{" "}

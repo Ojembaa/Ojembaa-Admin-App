@@ -33,7 +33,7 @@ const DeliverViewPage = ({ params }: { params: { slug: string } }) => {
         <div>
           <div className="flex flex-wrap gap-5 justify-between ml-[.125rem] mr-[.625rem]">
             <BackButton
-              text="Deliveries Details
+              text="Delivery Details
 "
             />
           </div>
@@ -103,6 +103,10 @@ const DeliverViewPage = ({ params }: { params: { slug: string } }) => {
                         "MMMM D, YYYY"
                       )}
                     </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="font-bold">Distance (KM):</div>
+                    <div>{deliveryDetail?.distance}</div>
                   </div>
                 </div>
               </div>
