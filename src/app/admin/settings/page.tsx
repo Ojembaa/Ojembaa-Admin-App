@@ -57,7 +57,7 @@ const Settings = () => {
               {!loading &&
                 settings?.map((data) => {
                   return (
-                    <tr className="" key={data?.id}>
+                    <tr className="hover:bg-orange-200" key={data?.id}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
                         {data?.weightClass}
                       </td>

@@ -25,7 +25,7 @@ export interface DashboardCard {
 export default function UsersChart(dashboardCardProps: DashboardCard) {
   const {
     bg_color = "bg-blue-500",
-    count = 500,
+    count = 0,
     title = "Current Total User",
     description,
     data,

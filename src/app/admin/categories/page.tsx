@@ -126,7 +126,7 @@ const Category = () => {
               {!loading &&
                 filteredCategories?.map((data, idx: number) => {
                   return (
-                    <tr className="" key={idx}>
+                    <tr className="hover:bg-orange-200" key={idx}>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
                         {data.name}
                       </td>

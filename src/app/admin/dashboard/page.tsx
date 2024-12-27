@@ -14,12 +14,21 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import { useGetStats } from "@/hooks/useGetStats";
+import { useGetRecentDelivery } from "@/hooks/useRecentDelivery";
+import DeliveryList from "@/components/Admin/deliveriesList";
 
 const Dashboard = () => {
   const currentUser: IAppUsers = getCurrentUser();
   const { fetchAllUsers } = useGetUsers();
 
   const { fetchStat, loading: loadingStats, stats } = useGetStats();
+  const { fetchRecentDelivery, recentDelivery, loading } =
+    useGetRecentDelivery();
+
+  useEffect(() => {
+    fetchRecentDelivery();
+  }, []);
+
   const [statsData, setStatsData] = useState<{
     data: {
       packages: number;
@@ -48,10 +57,8 @@ const Dashboard = () => {
             className={`mt-[2.625rem] ml-[1.375rem] my-[1.5rem] text-black text-xl font-poppins`}
           >
             Hey{" "}
-            <span className="capitalize font-bold">
-              {currentUser.firstName}
-            </span>
-            , Welcome back!
+            <span className="capitalize font-bold">{currentUser.email}</span>,
+            Welcome back!
           </p>
           <div className=" flex flex-col gap-y-3">
             <div className=" w-full md:flex-row flex-col h-fit flex justify-between rounded-[.7684rem] gap-[1.125rem]">
@@ -94,6 +101,11 @@ const Dashboard = () => {
               />
             </div>
             {/* <SalesChart /> */}
+
+            <div className="mt-5">
+              <hr className="border-slate-500"/>
+            </div>
+            <DeliveryList deliveriesData={recentDelivery} loading={loading} />
           </div>
         </Container>
       </AdminLayout>

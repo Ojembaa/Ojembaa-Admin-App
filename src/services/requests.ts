@@ -82,7 +82,7 @@ export async function httpGetRecentDelivery(query?: QueryParamDto) {
       params: { ...query },
     }
   );
-  return response.data.data;
+  return response.data;
 }
 
 export async function httpUpdateCategoryById(id: string, object: ICategories) {
