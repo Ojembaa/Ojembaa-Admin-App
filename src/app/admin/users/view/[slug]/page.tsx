@@ -39,7 +39,7 @@ const UserViewPage = ({ params }: { params: { slug: string } }) => {
         ) : (
           <div>
             <div className="flex flex-wrap gap-5 justify-between ml-[.125rem] mr-[.625rem]">
-              <BackButton text="Bulletin List Page" />
+              <BackButton text="User List Page" />
             </div>
             <div className="py-2">
               <hr />

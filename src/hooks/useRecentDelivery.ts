@@ -1,18 +1,17 @@
-import { ICategories } from "@/common/interfaces";
-import { httpGetCategories, QueryParamDto } from "@/services/requests";
+import { httpGetRecentDelivery, QueryParamDto } from "@/services/requests";
 import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 export const useGetRecentDelivery = () => {
-  const [recentDelivery, setRecentDelivery] = useState<ICategories[]>([]);
+  const [recentDelivery, setRecentDelivery] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchRecentDelivery = useCallback(async (query?: QueryParamDto) => {
     try {
       setLoading(true);
-      const response = await httpGetCategories();
-      setRecentDelivery(response);
+      const response = await httpGetRecentDelivery();
+      setRecentDelivery(response.data);
     } catch (error) {
       let errorMessage: string = "";
       if (error instanceof AxiosError) {

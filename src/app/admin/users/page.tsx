@@ -148,8 +148,8 @@ const User = () => {
               {!loading &&
                 filteredUser?.map((data, idx: number) => {
                   return (
-                    <tr className="" key={idx}>
-                      <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
+                    <tr className="hover:bg-orange-200" key={idx}>
+                      <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap ">
                         {idx + 1}
                       </td>
                       <td className="p-2 text-sm text-gray-700 capitalize whitespace-nowrap">
