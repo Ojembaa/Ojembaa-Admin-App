@@ -13,8 +13,6 @@ const DeliverViewPage = ({ params }: { params: { slug: string } }) => {
   const { fetchRecentDelivery, recentDelivery, loading } =
     useGetRecentDelivery();
 
-  console.log(deliveryDetail, "delivery detail");
-
   useEffect(() => {
     fetchRecentDelivery();
   }, []);
